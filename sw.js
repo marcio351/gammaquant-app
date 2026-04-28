@@ -1,5 +1,5 @@
 // Service Worker — Gamma Quant App
-const CACHE = 'gamma-app-v4';
+const CACHE = 'gamma-app-v5';
 const ASSETS = [
     '/',
     '/index.html',
@@ -29,25 +29,40 @@ self.addEventListener('activate', (e) => {
     self.clients.claim();
 });
 
+self.addEventListener('message', (e) => {
+    if (e.data && e.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
+});
+
 self.addEventListener('fetch', (e) => {
     const url = new URL(e.request.url);
+    if (e.request.method !== 'GET' || url.origin !== location.origin) return;
 
-    // protocolo.json sempre da rede (dados frescos do dia)
-    if (url.pathname.endsWith('/protocolo.json')) {
-        e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+    // protocolo.json e HTML: SEMPRE network-first (nunca servir versão velha)
+    const isHTML = e.request.headers.get('accept')?.includes('text/html')
+        || url.pathname === '/'
+        || url.pathname.endsWith('.html');
+
+    if (isHTML || url.pathname.endsWith('/protocolo.json') || url.pathname.endsWith('/sw.js') || url.pathname.endsWith('/manifest.json')) {
+        e.respondWith(
+            fetch(e.request).then(netResp => {
+                const copy = netResp.clone();
+                caches.open(CACHE).then(c => c.put(e.request, copy));
+                return netResp;
+            }).catch(() => caches.match(e.request) || caches.match('/index.html'))
+        );
         return;
     }
 
-    // Resto: cache-first com fallback de rede
-    if (e.request.method === 'GET' && url.origin === location.origin) {
-        e.respondWith(
-            caches.match(e.request).then(resp =>
-                resp || fetch(e.request).then(netResp => {
-                    const copy = netResp.clone();
-                    caches.open(CACHE).then(c => c.put(e.request, copy));
-                    return netResp;
-                }).catch(() => caches.match('/index.html'))
-            )
-        );
-    }
+    // Assets estáticos (CSS, JS, ícones): cache-first
+    e.respondWith(
+        caches.match(e.request).then(resp =>
+            resp || fetch(e.request).then(netResp => {
+                const copy = netResp.clone();
+                caches.open(CACHE).then(c => c.put(e.request, copy));
+                return netResp;
+            })
+        )
+    );
 });

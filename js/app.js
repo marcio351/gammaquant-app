@@ -366,12 +366,24 @@ if (dismissedUntil && Date.now() < dismissedUntil && installBanner) {
     installBanner.hidden = true;
 }
 
-// ===== 5. SERVICE WORKER (offline) =====
+// ===== 5. SERVICE WORKER (offline + auto-update) =====
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(err =>
-            console.warn('SW falhou:', err)
-        );
+        navigator.serviceWorker.register('/sw.js').then(reg => {
+            // Verifica atualização a cada vez que o app abre
+            reg.update();
+            // Se nova versão pronta, atualiza imediatamente
+            reg.addEventListener('updatefound', () => {
+                const newWorker = reg.installing;
+                if (!newWorker) return;
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                        window.location.reload();
+                    }
+                });
+            });
+        }).catch(err => console.warn('SW falhou:', err));
     });
 }
 
