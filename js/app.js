@@ -2,15 +2,30 @@
    GAMMA QUANT — APP DE ACESSO RÁPIDO (simples)
    ============================================ */
 
-// ===== 1. SERVICE WORKER (registra o mínimo para Chrome aceitar como PWA instalável) =====
+// ===== 1. SERVICE WORKER =====
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=8').then(reg => {
-            // Verifica atualização no carregamento
+        navigator.serviceWorker.register('/sw.js?v=12').then(reg => {
             reg.update();
         }).catch(err => console.warn('SW falhou:', err));
     });
 }
+
+// ===== 1.1 INSTALL PROMPT (Android/Chrome/Edge) =====
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.dataset.nativePrompt = '1';
+});
+
+window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null;
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.hidden = true;
+    try { localStorage.setItem('install-dismissed-until', String(Date.now() + 1000 * 60 * 60 * 24 * 365)); } catch(e) {}
+});
 
 // ===== 2. PROTOCOLO DO DIA =====
 async function loadProtocol() {
@@ -85,7 +100,7 @@ function updateMarketStatus() {
     }
 }
 
-// ===== 4. BANNER DE INSTALAÇÃO (mostra apenas se não está instalado) =====
+// ===== 4. BANNER DE INSTALAÇÃO =====
 function setupInstallBanner() {
     const banner = document.getElementById('install-banner');
     if (!banner) return;
@@ -93,7 +108,7 @@ function setupInstallBanner() {
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches
         || window.navigator.standalone === true;
 
-    if (isStandalone) return; // Já instalado, não mostra
+    if (isStandalone) return;
 
     let dismissed = false;
     try {
@@ -101,7 +116,39 @@ function setupInstallBanner() {
         if (until && Date.now() < until) dismissed = true;
     } catch(e) {}
 
-    if (!dismissed) banner.hidden = false;
+    if (dismissed) return;
+
+    const ua = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+    const sub = document.getElementById('install-banner-sub');
+
+    banner.addEventListener('click', async (ev) => {
+        ev.preventDefault();
+
+        if (deferredInstallPrompt) {
+            try {
+                deferredInstallPrompt.prompt();
+                const choice = await deferredInstallPrompt.userChoice;
+                deferredInstallPrompt = null;
+                if (choice && choice.outcome === 'accepted') {
+                    banner.hidden = true;
+                } else {
+                    window.location.href = '/como-instalar.html';
+                }
+            } catch (err) {
+                window.location.href = '/como-instalar.html';
+            }
+            return;
+        }
+
+        window.location.href = '/como-instalar.html';
+    });
+
+    if (isIOS && sub) {
+        sub.textContent = 'Toque para ver o passo a passo';
+    }
+
+    banner.hidden = false;
 }
 
 // ===== 6. VERSÃO + NOTIFICAÇÃO DE ATUALIZAÇÃO =====

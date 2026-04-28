@@ -1,24 +1,55 @@
-// Service Worker mínimo — satisfaz critério de PWA instalável do Chrome
-// SEM CACHE — sempre vai à rede. Só existe pra Chrome aceitar o install.
+// Service Worker — Gamma Quant App
+// Network-first com fallback offline mínimo. Satisfaz critério PWA do Chrome.
 
-const VERSION = 'gamma-v8';
+const VERSION = 'gamma-v12';
+const OFFLINE_URL = '/index.html';
 
-self.addEventListener('install', (e) => {
-    self.skipWaiting();
+self.addEventListener('install', (event) => {
+    event.waitUntil((async () => {
+        const cache = await caches.open(VERSION);
+        try {
+            await cache.add(new Request(OFFLINE_URL, { cache: 'reload' }));
+        } catch (e) {}
+        self.skipWaiting();
+    })());
 });
 
-self.addEventListener('activate', (e) => {
-    e.waitUntil((async () => {
-        // Limpa qualquer cache antigo
+self.addEventListener('activate', (event) => {
+    event.waitUntil((async () => {
         const keys = await caches.keys();
-        await Promise.all(keys.map(k => caches.delete(k)));
+        await Promise.all(keys.filter(k => k !== VERSION).map(k => caches.delete(k)));
         await self.clients.claim();
     })());
 });
 
-// Fetch handler obrigatório pro Chrome reconhecer como PWA
-// Mas só passa direto pra rede — sem cache, sem interceptação real
-self.addEventListener('fetch', (e) => {
-    // Deixa o browser lidar normalmente — não interceptamos
-    return;
+self.addEventListener('fetch', (event) => {
+    const req = event.request;
+
+    if (req.method !== 'GET') return;
+    if (!req.url.startsWith(self.location.origin)) return;
+
+    if (req.mode === 'navigate') {
+        event.respondWith((async () => {
+            try {
+                const fresh = await fetch(req);
+                return fresh;
+            } catch (e) {
+                const cache = await caches.open(VERSION);
+                const cached = await cache.match(OFFLINE_URL);
+                return cached || new Response('Offline', { status: 503 });
+            }
+        })());
+        return;
+    }
+
+    event.respondWith((async () => {
+        try {
+            return await fetch(req);
+        } catch (e) {
+            const cache = await caches.open(VERSION);
+            const cached = await cache.match(req);
+            if (cached) return cached;
+            return new Response('Offline', { status: 503 });
+        }
+    })());
 });
