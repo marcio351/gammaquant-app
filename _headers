@@ -18,6 +18,10 @@
 /protocolo.json
   Cache-Control: public, max-age=0, must-revalidate
 
+# Versão do app: nunca cachear (precisa estar sempre fresh para detectar updates)
+/version.json
+  Cache-Control: public, max-age=0, must-revalidate
+
 # CSS e JS: cache curto (5 min) — versionado via ?v=N
 /css/*
   Cache-Control: public, max-age=300, must-revalidate

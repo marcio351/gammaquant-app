@@ -104,6 +104,44 @@ function setupInstallBanner() {
     if (!dismissed) banner.hidden = false;
 }
 
+// ===== 6. VERSÃO + NOTIFICAÇÃO DE ATUALIZAÇÃO =====
+async function checkVersion() {
+    try {
+        const res = await fetch(`/version.json?t=${Date.now()}`, { cache: 'no-store' });
+        if (!res.ok) return;
+        const { version, date, build } = await res.json();
+
+        // Atualiza display da versão no footer
+        const footerEl = document.getElementById('footer-version');
+        if (footerEl) footerEl.textContent = `v${version}`;
+
+        // Compara com versão vista anteriormente
+        let lastSeen = null;
+        try { lastSeen = localStorage.getItem('last-seen-build'); } catch(e) {}
+
+        // Primeira visita: só registra (não mostra toast)
+        if (!lastSeen) {
+            try { localStorage.setItem('last-seen-build', build); } catch(e) {}
+            return;
+        }
+
+        // Build mudou: mostra toast
+        if (lastSeen !== build) {
+            showUpdateToast();
+            try { localStorage.setItem('last-seen-build', build); } catch(e) {}
+        }
+    } catch (e) {
+        console.warn('Erro ao verificar versão:', e);
+    }
+}
+
+function showUpdateToast() {
+    const toast = document.getElementById('update-toast');
+    if (!toast) return;
+    toast.hidden = false;
+    setTimeout(() => { toast.hidden = true; }, 3200);
+}
+
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
     loadProtocol();
@@ -111,6 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateMarketStatus, 1000);
 
     setupInstallBanner();
+    checkVersion();
 
     setInterval(loadProtocol, 5 * 60 * 1000);
+    setInterval(checkVersion, 5 * 60 * 1000); // checa atualização a cada 5min
 });
