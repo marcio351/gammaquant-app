@@ -2,14 +2,14 @@
    GAMMA QUANT — APP DE ACESSO RÁPIDO (simples)
    ============================================ */
 
-// ===== 1. AUTO-LIMPEZA: remove service workers antigos (cleanup) =====
+// ===== 1. SERVICE WORKER (registra o mínimo para Chrome aceitar como PWA instalável) =====
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(regs => {
-        regs.forEach(reg => reg.unregister());
-    }).catch(() => {});
-}
-if ('caches' in window) {
-    caches.keys().then(keys => keys.forEach(k => caches.delete(k))).catch(() => {});
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js?v=8').then(reg => {
+            // Verifica atualização no carregamento
+            reg.update();
+        }).catch(err => console.warn('SW falhou:', err));
+    });
 }
 
 // ===== 2. PROTOCOLO DO DIA =====
