@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Guia de Instalação — Gamma Quant</title>
+<style>
+@page { size: A4; margin: 14mm 12mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #fff;
+    background: #000;
+    line-height: 1.5;
+    font-size: 11pt;
+}
+.page {
+    background: #000;
+    page-break-after: always;
+    padding: 0;
+}
+.page:last-child { page-break-after: auto; }
+
+/* ===== CAPA ===== */
+.cover {
+    height: 270mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at 30% 20%, rgba(245, 138, 0, 0.25), transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(245, 138, 0, 0.15), transparent 50%),
+                #000;
+    padding: 40px;
+}
+.cover img {
+    width: 130px;
+    height: 130px;
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(245, 138, 0, 0.35);
+    margin-bottom: 32px;
+}
+.cover h1 {
+    font-size: 36pt;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+    line-height: 1.05;
+}
+.cover h1 span { color: #f58a00; }
+.cover .subtitle {
+    font-size: 14pt;
+    color: #a8a8a8;
+    max-width: 480px;
+    margin-bottom: 28px;
+    font-weight: 500;
+}
+.cover .url {
+    background: #f58a00;
+    color: #000;
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-weight: 800;
+    font-size: 14pt;
+    letter-spacing: 0.3px;
+    margin-bottom: 32px;
+    display: inline-block;
+}
+.cover .features {
+    display: flex;
+    gap: 28px;
+    margin-top: 16px;
+}
+.cover .feat {
+    color: #d4d4d4;
+    font-size: 10pt;
+    font-weight: 600;
+}
+.cover .feat strong { color: #f58a00; display: block; font-size: 18pt; margin-bottom: 4px; }
+.cover .footer-cover {
+    position: absolute;
+    bottom: 28mm;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 9pt;
+    color: #6b6b6b;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* ===== PÁGINAS DE PASSO A PASSO ===== */
+.section-page { padding: 0; }
+.section-header {
+    background: linear-gradient(135deg, #f58a00, #ff9a1a);
+    color: #000;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+.section-header .platform-icon {
+    width: 48px;
+    height: 48px;
+    background: #000;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22pt;
+}
+.section-header h2 {
+    font-size: 22pt;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+}
+.section-header .tag {
+    margin-left: auto;
+    background: #000;
+    color: #f58a00;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 9pt;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.steps-container { padding: 0 28px; }
+
+.step {
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    page-break-inside: avoid;
+}
+.step-num {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f58a00;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14pt;
+}
+.step-num.check { background: #22c55e; }
+.step-content { flex: 1; }
+.step-title {
+    font-size: 12pt;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #fff;
+}
+.step-desc {
+    color: #d4d4d4;
+    font-size: 10pt;
+    line-height: 1.55;
+}
+.step-desc strong { color: #fff; }
+.step-desc .icon-inline {
+    background: rgba(245, 138, 0, 0.15);
+    color: #f58a00;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 9.5pt;
+    border: 1px solid rgba(245, 138, 0, 0.3);
+}
+.step-desc .hint {
+    display: block;
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border-left: 2px solid #f58a00;
+    border-radius: 4px;
+    font-size: 9pt;
+    color: #a8a8a8;
+}
+
+/* ===== PÁGINA FINAL ===== */
+.final-page {
+    height: 270mm;
+    padding: 40px 28px;
+    display: flex;
+    flex-direction: column;
+}
+.final-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+.final-header h2 {
+    font-size: 24pt;
+    font-weight: 900;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+.final-header h2 span { color: #f58a00; }
+.final-header p {
+    color: #a8a8a8;
+    font-size: 11pt;
+}
+.qr-section {
+    background: #111;
+    border: 1px solid rgba(245, 138, 0, 0.3);
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    margin-bottom: 24px;
+}
+.qr-section img {
+    width: 180px;
+    height: 180px;
+    border-radius: 12px;
+    background: #fff;
+    padding: 8px;
+    margin-bottom: 16px;
+}
+.qr-section h3 {
+    font-size: 14pt;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+.qr-section p {
+    color: #a8a8a8;
+    font-size: 10pt;
+}
+.benefits {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+.benefit {
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+.benefit-icon { font-size: 18pt; flex-shrink: 0; }
+.benefit-text { font-size: 9.5pt; color: #d4d4d4; line-height: 1.5; }
+.benefit-text strong { color: #fff; display: block; margin-bottom: 2px; }
+
+.support {
+    margin-top: auto;
+    background: linear-gradient(135deg, #1a1a1a, #111);
+    border: 1px solid rgba(245, 138, 0, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+.support h4 {
+    font-size: 11pt;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.support p {
+    color: #a8a8a8;
+    font-size: 9.5pt;
+    line-height: 1.6;
+}
+.support strong { color: #f58a00; }
+
+.footer-page {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 8pt;
+    color: #6b6b6b;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<div class="page cover">
+    <img src="icons/icon-512.png" alt="Gamma Quant">
+    <h1>Instale o app<br><span>Gamma Quant</span></h1>
+    <p class="subtitle">Acesso rápido ao Protocolo, Plataforma e Cursos<br>direto da tela inicial do seu dispositivo.</p>
+    <span class="url">app.gammaquant.com.br</span>
+    <div class="features">
+        <div class="feat"><strong>30s</strong>de instalação</div>
+        <div class="feat"><strong>0 MB</strong>de download</div>
+        <div class="feat"><strong>3</strong>plataformas</div>
+    </div>
+    <div class="footer-cover">Quem decide antes, decide melhor.</div>
+</div>
+
+<!-- ===== iPHONE ===== -->
+<div class="page section-page">
+    <div class="section-header">
+        <div class="platform-icon">📱</div>
+        <h2>Instalar no iPhone</h2>
+        <span class="tag">iOS / SAFARI</span>
+    </div>
+    <div class="steps-container">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <div class="step-title">Abra o Safari</div>
+                <div class="step-desc">Acesse <strong>app.gammaquant.com.br</strong> usando o navegador <strong>Safari</strong>.<span class="hint">⚠️ Precisa ser o Safari. Pelo Chrome no iPhone não funciona a instalação.</span></div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <div class="step-title">Toque no botão Compartilhar</div>
+                <div class="step-desc">É o ícone <span class="icon-inline">⬆ Compartilhar</span> que fica na <strong>barra inferior</strong> do Safari (quadrado com seta para cima).</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <div class="step-title">Toque em "Adicionar à Tela de Início"</div>
+                <div class="step-desc">No menu que abrir, role um pouco para baixo até encontrar <span class="icon-inline">➕ Adicionar à Tela de Início</span> e toque nele.</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+                <div class="step-title">Confirme em "Adicionar"</div>
+                <div class="step-desc">O nome <strong>"Gamma"</strong> já vem preenchido. Toque em <strong>Adicionar</strong> no canto superior direito da tela.</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num check">✓</div>
+            <div class="step-content">
+                <div class="step-title">Pronto! Ícone laranja na sua tela</div>
+                <div class="step-desc">Procure o ícone <strong>laranja com Y</strong> na sua tela inicial. Abre como um app de verdade — em tela cheia, sem barra do navegador.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ANDROID ===== -->
+<div class="page section-page">
+    <div class="section-header">
+        <div class="platform-icon">🤖</div>
+        <h2>Instalar no Android</h2>
+        <span class="tag">CHROME / EDGE</span>
+    </div>
+    <div class="steps-container">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <div class="step-title">Abra no Chrome</div>
+                <div class="step-desc">Acesse <strong>app.gammaquant.com.br</strong> no <strong>Chrome</strong> (ou Samsung Internet, Edge, Opera — todos funcionam).</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <div class="step-title">Toque na faixa "Instalar app"</div>
+                <div class="step-desc">Quando a página abrir, vai aparecer uma <strong>faixa laranja na parte de baixo</strong> com o botão <span class="icon-inline">📱 Instalar</span>. Toque nele.<span class="hint">💡 Se não aparecer: toque no menu <strong>⋮</strong> (3 pontinhos no canto superior direito) → <strong>"Instalar app"</strong> ou <strong>"Adicionar à tela inicial"</strong>.</span></div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <div class="step-title">Confirme "Instalar"</div>
+                <div class="step-desc">Vai aparecer uma janela perguntando se você quer instalar. Toque em <strong>Instalar</strong>.</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num check">✓</div>
+            <div class="step-content">
+                <div class="step-title">Pronto! Ícone na tela inicial</div>
+                <div class="step-desc">O ícone <strong>laranja com Y</strong> aparece automaticamente na sua tela inicial e na gaveta de apps. Abre como um app nativo, em tela cheia.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== PC ===== -->
+<div class="page section-page">
+    <div class="section-header">
+        <div class="platform-icon">💻</div>
+        <h2>Instalar no Computador</h2>
+        <span class="tag">WINDOWS / MAC</span>
+    </div>
+    <div class="steps-container">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <div class="step-title">Abra no Chrome ou Edge</div>
+                <div class="step-desc">Acesse <strong>app.gammaquant.com.br</strong> usando <strong>Google Chrome</strong> ou <strong>Microsoft Edge</strong>. Funciona em Windows, Mac e Linux.</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <div class="step-title">Clique no ícone de instalação</div>
+                <div class="step-desc">Na <strong>barra de endereços</strong>, do lado direito da URL, vai aparecer um ícone <span class="icon-inline">⊕ Instalar</span> (monitor com seta). Clique nele.<span class="hint">💡 Alternativa: clique no menu <strong>⋮</strong> (canto superior direito) → <strong>"Instalar Gamma Quant..."</strong>.</span></div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <div class="step-title">Confirme "Instalar"</div>
+                <div class="step-desc">Uma janela vai abrir perguntando se você quer instalar. Clique em <strong>Instalar</strong>.</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num check">✓</div>
+            <div class="step-content">
+                <div class="step-title">Atalho na sua área de trabalho</div>
+                <div class="step-desc">O Gamma Quant vira um <strong>app de verdade</strong> no seu computador — abre na barra de tarefas (Windows) ou Dock (Mac). Acesse pelo Menu Iniciar ou Launchpad sempre que quiser.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== PÁGINA FINAL ===== -->
+<div class="page">
+    <div class="final-page">
+        <div class="final-header">
+            <h2>O que você terá <span>na palma da mão</span></h2>
+            <p>Um único app. Acesso direto a tudo que importa.</p>
+        </div>
+
+        <div class="qr-section">
+            <img src="qr-code-app.png" alt="QR Code app.gammaquant.com.br">
+            <h3>Escaneie com a câmera do celular</h3>
+            <p>Aponte a câmera para o QR Code acima e abra o link<br>para instalar o app em segundos.</p>
+        </div>
+
+        <div class="benefits">
+            <div class="benefit">
+                <div class="benefit-icon">📊</div>
+                <div class="benefit-text"><strong>Protocolo Gamma</strong>Live diária às 8h30 + PDF do dia. Grátis para todos.</div>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">💎</div>
+                <div class="benefit-text"><strong>Plataforma</strong>Acesso direto e renovação para assinantes.</div>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">🎓</div>
+                <div class="benefit-text"><strong>Cursos</strong>Área do aluno e catálogo de cursos disponíveis.</div>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">⚡</div>
+                <div class="benefit-text"><strong>Atalhos rápidos</strong>Calendário econômico, Nasdaq e Ibovespa.</div>
+            </div>
+        </div>
+
+        <div class="support">
+            <h4>Precisa de ajuda?</h4>
+            <p>Fale com nosso time no WhatsApp:<br><strong>(21) 96421-2829</strong> · wa.me/5521964212829</p>
+        </div>
+
+        <div class="footer-page">Gamma Quant · gammaquant.com.br · Quem decide antes, decide melhor.</div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 // Service Worker — Gamma Quant App
-const CACHE = 'gamma-app-v1';
+const CACHE = 'gamma-app-v2';
 const ASSETS = [
     '/',
     '/index.html',
@@ -7,7 +7,10 @@ const ASSETS = [
     '/js/app.js',
     '/manifest.json',
     '/icons/logo-white.svg',
-    '/icons/favicon.svg'
+    '/icons/favicon.svg',
+    '/icons/icon-192.png',
+    '/icons/icon-512.png',
+    '/icons/apple-touch-icon.png'
 ];
 
 self.addEventListener('install', (e) => {

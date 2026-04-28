@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <title>Como Instalar — Gamma Quant</title>
+    <meta name="description" content="Passo a passo para instalar o app Gamma Quant no celular ou computador.">
+    <link rel="icon" type="image/png" sizes="64x64" href="/icons/favicon-64.png">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/app.css">
+    <style>
+        body { background: var(--black); }
+        .install-page {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 32px 20px 60px;
+        }
+        .install-hero {
+            text-align: center;
+            padding: 24px 0 32px;
+        }
+        .install-hero img {
+            width: 96px;
+            height: 96px;
+            border-radius: 22px;
+            margin: 0 auto 20px;
+            box-shadow: 0 12px 40px rgba(245, 138, 0, 0.25);
+        }
+        .install-hero h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+        .install-hero p {
+            color: var(--gray-300);
+            font-size: 15px;
+        }
+        .install-hero .badge {
+            display: inline-block;
+            background: var(--orange-soft);
+            color: var(--orange);
+            border: 1px solid rgba(245, 138, 0, 0.3);
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-top: 14px;
+        }
+
+        .platform-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 6px;
+            margin: 24px 0 32px;
+            position: sticky;
+            top: 16px;
+            z-index: 10;
+            backdrop-filter: blur(12px);
+        }
+        .platform-tab {
+            padding: 12px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--gray-300);
+            transition: var(--transition);
+            text-align: center;
+        }
+        .platform-tab.active {
+            background: var(--orange);
+            color: var(--black);
+            box-shadow: 0 4px 12px rgba(245, 138, 0, 0.3);
+        }
+
+        .step {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 14px;
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+        .step-num {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--orange);
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+        }
+        .step-content { flex: 1; }
+        .step-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--gray-100);
+        }
+        .step-desc {
+            color: var(--gray-300);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .step-icon-inline {
+            display: inline-block;
+            background: var(--orange-soft);
+            color: var(--orange);
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            margin: 0 2px;
+        }
+
+        .platform-section { display: none; animation: fadeIn 0.3s ease; }
+        .platform-section.active { display: block; }
+
+        .cta-final {
+            background: linear-gradient(135deg, var(--black-card), var(--black-elev));
+            border: 1px solid rgba(245, 138, 0, 0.3);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            text-align: center;
+            margin-top: 32px;
+        }
+        .cta-final h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .cta-final p {
+            color: var(--gray-300);
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+        .cta-final .btn {
+            display: inline-flex;
+            font-size: 15px;
+            padding: 14px 28px;
+        }
+
+        .help-link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+        .help-link a { color: var(--orange); font-weight: 600; }
+
+        .visual-hint {
+            background: var(--black);
+            border: 1px dashed var(--gray-700);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="install-page">
+
+        <div class="install-hero">
+            <img src="/icons/icon-512.png" alt="Gamma Quant">
+            <h1>Instale o app Gamma Quant</h1>
+            <p>Acesso rápido ao Protocolo, Plataforma e Cursos<br>direto da tela inicial do seu dispositivo.</p>
+            <span class="badge">⚡ INSTALAÇÃO EM 30 SEGUNDOS</span>
+        </div>
+
+        <div class="platform-tabs" role="tablist">
+            <button class="platform-tab active" data-platform="iphone">📱 iPhone</button>
+            <button class="platform-tab" data-platform="android">🤖 Android</button>
+            <button class="platform-tab" data-platform="pc">💻 Computador</button>
+        </div>
+
+        <!-- IPHONE -->
+        <div class="platform-section active" data-section="iphone">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <div class="step-title">Abra no Safari</div>
+                    <div class="step-desc">Acesse <strong>app.gammaquant.com.br</strong> usando o navegador <strong>Safari</strong> (precisa ser o Safari, não funciona pelo Chrome no iPhone).</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <div class="step-title">Toque no botão Compartilhar</div>
+                    <div class="step-desc">É o ícone <span class="step-icon-inline">⬆️</span> que fica na <strong>barra inferior</strong> do Safari (quadrado com seta para cima).</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <div class="step-title">Role e toque em "Adicionar à Tela de Início"</div>
+                    <div class="step-desc">Procure a opção <span class="step-icon-inline">➕ Adicionar à Tela de Início</span> no menu. Pode ser preciso rolar um pouco para baixo.</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <div class="step-title">Confirme em "Adicionar"</div>
+                    <div class="step-desc">O nome <strong>"Gamma"</strong> já vem preenchido. Toque em <strong>Adicionar</strong> no canto superior direito.</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">✓</div>
+                <div class="step-content">
+                    <div class="step-title">Pronto! Ícone laranja na sua tela</div>
+                    <div class="step-desc">Procure o ícone <strong>laranja com Y</strong> na sua tela inicial. Abra de lá — funciona como um app de verdade, em tela cheia, sem barra do navegador.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANDROID -->
+        <div class="platform-section" data-section="android">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <div class="step-title">Abra no Chrome</div>
+                    <div class="step-desc">Acesse <strong>app.gammaquant.com.br</strong> no navegador Chrome (ou Samsung Internet, Edge, Opera — todos funcionam).</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <div class="step-title">Toque na faixa "Instalar app"</div>
+                    <div class="step-desc">Quando a página abrir, vai aparecer uma <strong>faixa laranja na parte de baixo</strong> com o botão <span class="step-icon-inline">📱 Instalar</span>. Toque nele.</div>
+                    <div class="visual-hint">💡 Se não aparecer, toque no menu <strong>⋮</strong> (3 pontinhos no canto superior direito) → <strong>"Instalar app"</strong> ou <strong>"Adicionar à tela inicial"</strong>.</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <div class="step-title">Confirme "Instalar"</div>
+                    <div class="step-desc">Vai abrir uma janela perguntando se você quer instalar. Toque em <strong>Instalar</strong>.</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">✓</div>
+                <div class="step-content">
+                    <div class="step-title">Pronto! Ícone na tela inicial</div>
+                    <div class="step-desc">O ícone <strong>laranja com Y</strong> aparece automaticamente na sua tela inicial e na gaveta de apps. Abre como um app nativo — em tela cheia, sem navegador.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PC -->
+        <div class="platform-section" data-section="pc">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <div class="step-title">Abra no Chrome ou Edge</div>
+                    <div class="step-desc">Acesse <strong>app.gammaquant.com.br</strong> usando <strong>Google Chrome</strong> ou <strong>Microsoft Edge</strong>. Funciona em Windows, Mac e Linux.</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <div class="step-title">Clique no ícone de instalação</div>
+                    <div class="step-desc">Na <strong>barra de endereços</strong>, do lado direito da URL, vai aparecer um ícone <span class="step-icon-inline">⊕</span> (monitor com seta para baixo). Clique nele.</div>
+                    <div class="visual-hint">💡 Alternativa: clique no menu <strong>⋮</strong> (canto superior direito) → <strong>"Instalar Gamma Quant"</strong>.</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <div class="step-title">Confirme "Instalar"</div>
+                    <div class="step-desc">Uma janela vai abrir. Clique em <strong>Instalar</strong>.</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">✓</div>
+                <div class="step-content">
+                    <div class="step-title">Pronto! Atalho na sua área de trabalho</div>
+                    <div class="step-desc">O Gamma vira um <strong>app de verdade</strong> no seu computador — abre na barra de tarefas (Windows) ou Dock (Mac). Acesse pelo Menu Iniciar ou Launchpad.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-final">
+            <h3>Tudo pronto? Acesse o app agora.</h3>
+            <p>Se ainda não instalou, abra direto pelo navegador:</p>
+            <a href="/" class="btn btn-primary">
+                <span>Abrir Gamma Quant</span>
+                <span class="btn-icon">→</span>
+            </a>
+        </div>
+
+        <p class="help-link">
+            Precisa de ajuda? Fale com a gente no <a href="https://wa.me/5521964212829" target="_blank">WhatsApp</a>.
+        </p>
+
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.platform-tab');
+        const sections = document.querySelectorAll('.platform-section');
+
+        // Auto-detecta plataforma
+        const ua = navigator.userAgent;
+        let detected = 'pc';
+        if (/iPad|iPhone|iPod/.test(ua)) detected = 'iphone';
+        else if (/android/i.test(ua)) detected = 'android';
+
+        function activate(platform) {
+            tabs.forEach(t => t.classList.toggle('active', t.dataset.platform === platform));
+            sections.forEach(s => s.classList.toggle('active', s.dataset.section === platform));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.platform)));
+
+        // Aplica detecção apenas no primeiro carregamento
+        if (detected !== 'iphone') activate(detected);
+    </script>
+</body>
+</html>
