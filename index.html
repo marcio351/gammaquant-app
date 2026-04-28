@@ -25,7 +25,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/app.css?v=5">
+    <link rel="stylesheet" href="/css/app.css?v=6">
 </head>
 <body>
     <div class="app-shell">
@@ -39,32 +39,15 @@
             </div>
         </header>
 
-        <!-- BANNER INSTALAR (sempre visível enquanto não instalado) -->
-        <button class="install-banner" id="install-banner" hidden>
+        <!-- BANNER INSTALAR (link simples para guia) -->
+        <a href="/como-instalar.html" class="install-banner" id="install-banner" hidden>
             <span class="install-banner-icon">📱</span>
             <span class="install-banner-text">
                 <strong>Instale o app</strong>
-                <span>Acesso direto da tela inicial · 30s</span>
+                <span>Veja o passo a passo · 30s</span>
             </span>
             <span class="install-banner-arrow">→</span>
-        </button>
-
-        <!-- MODAL DE INSTRUÇÕES (só aparece em iOS Safari ou navegador interno) -->
-        <div class="install-modal" id="install-modal" hidden onclick="if(event.target===this)this.hidden=true;document.body.style.overflow='';">
-            <div class="install-modal-content">
-                <button class="install-modal-close" id="install-modal-close" aria-label="Fechar" onclick="document.getElementById('install-modal').hidden=true;document.body.style.overflow='';">×</button>
-
-                <img src="/icons/icon-192.png" alt="Gamma" class="install-modal-icon">
-                <h3 class="install-modal-title" id="install-modal-title">Instalar Gamma Quant</h3>
-                <p class="install-modal-platform" id="install-modal-platform"></p>
-
-                <div class="install-steps-container" id="install-steps-container">
-                    <!-- Conteúdo injetado por JS -->
-                </div>
-
-                <button class="install-modal-dismiss" id="install-modal-dismiss" onclick="document.getElementById('install-modal').hidden=true;document.body.style.overflow='';try{localStorage.setItem('install-dismissed-until',String(Date.now()+30*24*60*60*1000));document.getElementById('install-banner').hidden=true;}catch(e){}">Já instalei · Fechar</button>
-            </div>
-        </div>
+        </a>
 
         <!-- BLOCO 1 — PROTOCOLO GAMMA (TODOS) -->
         <section class="card card-protocol">
@@ -213,6 +196,6 @@
 
     </div>
 
-    <script src="/js/app.js?v=5"></script>
+    <script src="/js/app.js?v=6"></script>
 </body>
 </html>
