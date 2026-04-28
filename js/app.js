@@ -352,6 +352,20 @@ installModal?.addEventListener('click', (e) => {
     if (e.target === installModal) closeInstallModal();
 });
 
+// "Já instalei · Fechar" — esconde o banner por 30 dias
+const installDismissBtn = document.getElementById('install-modal-dismiss');
+installDismissBtn?.addEventListener('click', () => {
+    closeInstallModal();
+    if (installBanner) installBanner.hidden = true;
+    localStorage.setItem('install-dismissed-until', String(Date.now() + 30 * 24 * 60 * 60 * 1000));
+});
+
+// Respeita dismissão de 30 dias
+const dismissedUntil = parseInt(localStorage.getItem('install-dismissed-until') || '0', 10);
+if (dismissedUntil && Date.now() < dismissedUntil && installBanner) {
+    installBanner.hidden = true;
+}
+
 // ===== 5. SERVICE WORKER (offline) =====
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

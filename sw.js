@@ -1,5 +1,5 @@
 // Service Worker — Gamma Quant App
-const CACHE = 'gamma-app-v3';
+const CACHE = 'gamma-app-v4';
 const ASSETS = [
     '/',
     '/index.html',
