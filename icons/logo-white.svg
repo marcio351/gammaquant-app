@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" fill="none">
+  <!-- Placeholder para o símbolo PNG (será posicionado via HTML) -->
+  <!-- Texto "Gamma" (laranja) -->
+  <text x="92" y="38" font-family="Montserrat, sans-serif" font-weight="800" font-size="26" fill="#f58a00" letter-spacing="-0.5">Gamma</text>
+  <!-- Texto "Quant" (branco para fundo escuro) -->
+  <text x="92" y="66" font-family="Montserrat, sans-serif" font-weight="800" font-size="26" fill="#ffffff" letter-spacing="-0.5">Quant</text>
+</svg>

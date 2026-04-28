@@ -1,0 +1,40 @@
+{
+  "name": "Gamma Quant",
+  "short_name": "Gamma",
+  "description": "Acesso rápido ao Protocolo Gamma, Plataforma e Cursos.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "pt-BR",
+  "categories": ["finance", "education", "business"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Live de hoje",
+      "short_name": "Live",
+      "description": "Assistir live do Protocolo Gamma",
+      "url": "/?action=live"
+    },
+    {
+      "name": "PDF do dia",
+      "short_name": "PDF",
+      "description": "Baixar PDF do Protocolo Gamma",
+      "url": "/?action=pdf"
+    }
+  ]
+}
