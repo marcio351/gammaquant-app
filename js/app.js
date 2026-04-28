@@ -110,43 +110,92 @@ function setupProfileToggle(btnSelector, viewSelector, storageKey) {
     if (saved) activate(saved);
 }
 
-// ===== 4. PWA INSTALL PROMPT =====
+// ===== 4. INSTALAÇÃO DO APP (banner + modal por plataforma) =====
 let deferredPrompt = null;
-const installPrompt = document.getElementById('install-prompt');
-const installBtn = document.getElementById('install-btn');
-const installClose = document.getElementById('install-close');
+const installBanner = document.getElementById('install-banner');
+const installModal = document.getElementById('install-modal');
+const installModalClose = document.getElementById('install-modal-close');
+const installPlatformLabel = document.getElementById('install-modal-platform');
+const androidInstallBtn = document.getElementById('android-install-btn');
+const desktopInstallBtn = document.getElementById('desktop-install-btn');
 
+const ua = navigator.userAgent;
+const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+const isAndroid = /android/i.test(ua);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+// Captura prompt nativo Android/Desktop (Chrome, Edge)
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    if (!localStorage.getItem('install-dismissed')) {
-        installPrompt.hidden = false;
-    }
 });
 
-installBtn?.addEventListener('click', async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-        installPrompt.hidden = true;
-    }
+// Detecta se o app foi instalado
+window.addEventListener('appinstalled', () => {
+    installBanner.hidden = true;
+    installModal.hidden = true;
     deferredPrompt = null;
 });
 
-installClose?.addEventListener('click', () => {
-    installPrompt.hidden = true;
-    localStorage.setItem('install-dismissed', '1');
+// Mostra banner se não estiver instalado (sempre, todas as plataformas)
+if (!isStandalone) {
+    installBanner.hidden = false;
+}
+
+// Detecta plataforma para instruções
+function detectPlatform() {
+    if (isIOS) return 'ios';
+    if (isAndroid) return 'android';
+    return 'desktop';
+}
+
+function platformLabel() {
+    if (isIOS) return 'iPhone / iPad · Safari';
+    if (isAndroid) return 'Android · Chrome';
+    return 'Computador · Chrome / Edge';
+}
+
+// Abre modal com instruções da plataforma detectada
+function openInstallModal() {
+    const platform = detectPlatform();
+    installPlatformLabel.textContent = platformLabel();
+
+    document.querySelectorAll('.install-steps').forEach(s => {
+        s.hidden = s.dataset.platform !== platform;
+    });
+
+    installModal.hidden = false;
+    document.body.style.overflow = 'hidden';
+}
+
+function closeInstallModal() {
+    installModal.hidden = true;
+    document.body.style.overflow = '';
+}
+
+installBanner?.addEventListener('click', openInstallModal);
+installModalClose?.addEventListener('click', closeInstallModal);
+installModal?.addEventListener('click', (e) => {
+    if (e.target === installModal) closeInstallModal();
 });
 
-// iOS hint (sem beforeinstallprompt no Safari)
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-if (isIOS && !isStandalone && !localStorage.getItem('install-dismissed')) {
-    installPrompt.querySelector('span').textContent = '📱 Toque em "Compartilhar" → "Adicionar à Tela de Início"';
-    installBtn.hidden = true;
-    installPrompt.hidden = false;
+// Botões de instalação nativa (Android/Desktop)
+async function triggerNativeInstall() {
+    if (!deferredPrompt) {
+        alert('Use o menu do seu navegador (⋮ ou ⊕ na barra de endereço) para instalar.');
+        return;
+    }
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+        closeInstallModal();
+        installBanner.hidden = true;
+    }
+    deferredPrompt = null;
 }
+
+androidInstallBtn?.addEventListener('click', triggerNativeInstall);
+desktopInstallBtn?.addEventListener('click', triggerNativeInstall);
 
 // ===== 5. SERVICE WORKER (offline) =====
 if ('serviceWorker' in navigator) {

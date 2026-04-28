@@ -441,53 +441,197 @@ a { color: inherit; text-decoration: none; }
     line-height: 1.4;
 }
 
-/* ============ INSTALL PROMPT ============ */
-.install-prompt {
-    position: fixed;
-    bottom: calc(var(--safe-bottom) + 16px);
-    left: 16px;
-    right: 16px;
-    max-width: 448px;
-    margin: 0 auto;
-    background: var(--orange);
+/* ============ BANNER INSTALAR (permanente) ============ */
+.install-banner {
+    width: 100%;
+    background: linear-gradient(135deg, var(--orange), var(--orange-hover));
     color: var(--black);
-    padding: 12px 16px;
+    padding: 14px 18px;
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
-    gap: 10px;
-    box-shadow: 0 8px 32px rgba(245, 138, 0, 0.4);
-    z-index: 100;
-    font-size: 13px;
-    font-weight: 600;
-    animation: slideUp 0.4s ease;
+    gap: 14px;
+    text-align: left;
+    box-shadow: 0 6px 20px rgba(245, 138, 0, 0.3);
+    transition: var(--transition);
+    animation: bannerPulse 2.5s ease-in-out infinite;
 }
 
-.install-prompt span { flex: 1; }
+.install-banner:active { transform: scale(0.98); }
 
-#install-btn {
-    background: var(--black);
-    color: var(--orange);
-    padding: 8px 14px;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 12px;
-}
-
-#install-close {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.15);
-    color: var(--black);
-    font-size: 18px;
+.install-banner-icon {
+    font-size: 26px;
     line-height: 1;
+}
+
+.install-banner-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.install-banner-text strong {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+}
+
+.install-banner-text span {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.install-banner-arrow {
+    font-size: 22px;
     font-weight: 700;
+}
+
+@keyframes bannerPulse {
+    0%, 100% { box-shadow: 0 6px 20px rgba(245, 138, 0, 0.3); }
+    50% { box-shadow: 0 6px 28px rgba(245, 138, 0, 0.55); }
+}
+
+/* ============ MODAL DE INSTRUÇÕES ============ */
+.install-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+    padding: 16px;
+}
+
+@media (min-width: 600px) {
+    .install-modal { align-items: center; }
+}
+
+.install-modal-content {
+    background: var(--black-card);
+    border: 1px solid rgba(245, 138, 0, 0.3);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    animation: slideUp 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 @keyframes slideUp {
-    from { transform: translateY(100%); opacity: 0; }
+    from { transform: translateY(40px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
+}
+
+.install-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--black-elev);
+    color: var(--gray-300);
+    font-size: 22px;
+    line-height: 1;
+    font-weight: 700;
+    transition: var(--transition);
+}
+.install-modal-close:active { background: var(--gray-700); color: var(--gray-100); }
+
+.install-modal-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    margin: 0 auto 16px;
+    box-shadow: 0 10px 30px rgba(245, 138, 0, 0.3);
+}
+
+.install-modal-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+}
+
+.install-modal-platform {
+    font-size: 12px;
+    color: var(--gray-300);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.install-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.install-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--black);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--gray-100);
+}
+
+.install-step strong { color: var(--orange); }
+
+.install-step-num {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: var(--black);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.install-step-fallback {
+    font-size: 12px;
+    color: var(--gray-300);
+    line-height: 1.6;
+    text-align: center;
+    margin-top: 12px;
+    padding: 12px;
+    background: var(--black);
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--gray-700);
+}
+
+.install-step-fallback strong { color: var(--orange); }
+
+.install-help-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* ============ DESKTOP ============ */
