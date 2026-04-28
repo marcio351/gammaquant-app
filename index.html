@@ -25,7 +25,49 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/app.css?v=6">
+    <link rel="stylesheet" href="/css/app.css?v=7">
+
+    <!-- LIMPEZA DE EMERGÊNCIA (executa antes de tudo) -->
+    <script>
+    (function(){
+        try {
+            // Sinaliza que esta é a versão nova
+            var APP_VERSION = '7';
+            var lastSeen = null;
+            try { lastSeen = localStorage.getItem('app-version'); } catch(e) {}
+
+            // Se versão diferente OU primeira vez nesta versão limpa, força reset
+            if (lastSeen !== APP_VERSION) {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(regs){
+                        if (regs.length > 0) {
+                            Promise.all(regs.map(function(r){return r.unregister();})).then(function(){
+                                if ('caches' in window) {
+                                    caches.keys().then(function(keys){
+                                        return Promise.all(keys.map(function(k){return caches.delete(k);}));
+                                    }).then(function(){
+                                        try { localStorage.setItem('app-version', APP_VERSION); } catch(e) {}
+                                        // Força reload sem cache
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    try { localStorage.setItem('app-version', APP_VERSION); } catch(e) {}
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            try { localStorage.setItem('app-version', APP_VERSION); } catch(e) {}
+                        }
+                    }).catch(function(){
+                        try { localStorage.setItem('app-version', APP_VERSION); } catch(e) {}
+                    });
+                } else {
+                    try { localStorage.setItem('app-version', APP_VERSION); } catch(e) {}
+                }
+            }
+        } catch(e) {}
+    })();
+    </script>
 </head>
 <body>
     <div class="app-shell">
@@ -196,6 +238,6 @@
 
     </div>
 
-    <script src="/js/app.js?v=6"></script>
+    <script src="/js/app.js?v=7"></script>
 </body>
 </html>
