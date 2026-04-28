@@ -4,10 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#000000">
-    <title>Como Instalar — Gamma Quant</title>
+    <title>Gamma Quant</title>
     <meta name="description" content="Passo a passo para instalar o app Gamma Quant no celular ou computador.">
+    <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" sizes="64x64" href="/icons/favicon-64.png">
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gamma Quant">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Se aberto como app instalado, redireciona para o app principal -->
+    <script>
+    (function(){
+        var isStandalone = window.matchMedia('(display-mode: standalone)').matches
+            || window.navigator.standalone === true;
+        if (isStandalone) {
+            window.location.replace('/');
+        }
+    })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -185,6 +201,16 @@
             <span class="badge">⚡ INSTALAÇÃO EM 30 SEGUNDOS</span>
         </div>
 
+        <div style="background: rgba(245, 138, 0, 0.1); border: 1px solid rgba(245, 138, 0, 0.4); border-radius: 12px; padding: 16px; margin: 16px 0; text-align: center;">
+            <strong style="color: #f58a00; font-size: 14px;">⚠️ IMPORTANTE</strong>
+            <p style="font-size: 13px; color: #d4d4d4; margin-top: 6px; line-height: 1.5;">
+                Para instalar com o nome correto, <strong style="color: #fff;">abra o app principal antes</strong>:
+            </p>
+            <a href="/" style="display: inline-block; margin-top: 12px; padding: 12px 24px; background: #f58a00; color: #000; border-radius: 100px; font-weight: 800; font-size: 14px; text-decoration: none;">
+                ← Abrir Gamma Quant
+            </a>
+        </div>
+
         <div class="platform-tabs" role="tablist">
             <button class="platform-tab active" data-platform="iphone">📱 iPhone</button>
             <button class="platform-tab" data-platform="android">🤖 Android</button>
@@ -196,8 +222,8 @@
             <div class="step">
                 <div class="step-num">1</div>
                 <div class="step-content">
-                    <div class="step-title">Abra no Safari</div>
-                    <div class="step-desc">Acesse <strong>app.gammaquant.com.br</strong> usando o navegador <strong>Safari</strong> (precisa ser o Safari, não funciona pelo Chrome no iPhone).</div>
+                    <div class="step-title">Abra no Safari (não no WhatsApp)</div>
+                    <div class="step-desc">Acesse <strong>app.gammaquant.com.br</strong> usando o <strong>Safari</strong> (ícone azul nativo do iPhone). Não funciona pelo navegador interno do WhatsApp ou Instagram.</div>
                 </div>
             </div>
             <div class="step">

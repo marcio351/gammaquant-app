@@ -1,7 +1,7 @@
 {
   "id": "/?source=pwa",
   "name": "Gamma Quant",
-  "short_name": "Gamma",
+  "short_name": "Gamma Quant",
   "description": "Acesso rápido ao Protocolo Gamma, Plataforma e Cursos.",
   "start_url": "/?source=pwa",
   "scope": "/",
