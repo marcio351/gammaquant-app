@@ -266,6 +266,18 @@ a { color: inherit; text-decoration: none; }
 }
 .btn-ghost:active { color: var(--orange); }
 
+.btn-ghost-line {
+    background: transparent;
+    color: var(--orange);
+    border: 1px solid rgba(245, 138, 0, 0.4);
+    min-height: 48px;
+    font-size: 14px;
+}
+.btn-ghost-line:active {
+    background: var(--orange-soft);
+    border-color: var(--orange);
+}
+
 .btn-disabled {
     opacity: 0.5;
     cursor: not-allowed;

@@ -85,37 +85,7 @@ function updateMarketStatus() {
     }
 }
 
-// ===== 4. PROFILE TOGGLES =====
-function setupProfileToggle(btnSelector, viewSelector, storageKey) {
-    const buttons = document.querySelectorAll(btnSelector);
-    const views = document.querySelectorAll(viewSelector);
-
-    const dataAttr = btnSelector.includes('course') ? 'profileCourse' : 'profile';
-    const viewAttr = btnSelector.includes('course') ? 'viewCourse' : 'view';
-
-    let saved = null;
-    try { saved = localStorage.getItem(storageKey); } catch(e) {}
-
-    function activate(profile) {
-        buttons.forEach(b => {
-            const isActive = b.dataset[dataAttr] === profile;
-            b.classList.toggle('active', isActive);
-            b.setAttribute('aria-selected', isActive);
-        });
-        views.forEach(v => {
-            v.hidden = v.dataset[viewAttr] !== profile;
-        });
-        try { localStorage.setItem(storageKey, profile); } catch(e) {}
-    }
-
-    buttons.forEach(b => {
-        b.addEventListener('click', () => activate(b.dataset[dataAttr]));
-    });
-
-    if (saved) activate(saved);
-}
-
-// ===== 5. BANNER DE INSTALAÇÃO (mostra apenas se não está instalado) =====
+// ===== 4. BANNER DE INSTALAÇÃO (mostra apenas se não está instalado) =====
 function setupInstallBanner() {
     const banner = document.getElementById('install-banner');
     if (!banner) return;
@@ -140,8 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateMarketStatus();
     setInterval(updateMarketStatus, 1000);
 
-    setupProfileToggle('.profile-btn[data-profile]', '.profile-view', 'gamma-profile');
-    setupProfileToggle('.profile-btn[data-profile-course]', '.profile-view-course', 'gamma-profile-course');
     setupInstallBanner();
 
     setInterval(loadProtocol, 5 * 60 * 1000);

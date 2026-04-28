@@ -25,14 +25,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/app.css?v=8">
+    <link rel="stylesheet" href="/css/app.css?v=10">
 
     <!-- LIMPEZA DE EMERGÊNCIA (executa antes de tudo) -->
     <script>
     (function(){
         try {
             // Sinaliza que esta é a versão nova
-            var APP_VERSION = '9';
+            var APP_VERSION = '10';
             var lastSeen = null;
             try { lastSeen = localStorage.getItem('app-version'); } catch(e) {}
 
@@ -117,85 +117,49 @@
             </div>
         </section>
 
-        <!-- BLOCO 2 — PLATAFORMA (conteúdo dinâmico por perfil) -->
+        <!-- BLOCO 2 — PLATAFORMA -->
         <section class="card card-platform">
             <div class="card-header">
                 <span class="card-icon">💎</span>
                 <h2 class="card-title-sm">Plataforma Gamma</h2>
             </div>
+            <p class="card-desc">Inteligência de mercado em tempo real. Skew, fluxo, gamma exposure.</p>
 
-            <!-- Toggle de perfil -->
-            <div class="profile-toggle" role="tablist" aria-label="Perfil">
-                <button class="profile-btn active" data-profile="subscriber" role="tab" aria-selected="true">Sou Assinante</button>
-                <button class="profile-btn" data-profile="visitor" role="tab" aria-selected="false">Não sou Assinante</button>
-            </div>
-
-            <!-- Visão ASSINANTE -->
-            <div class="profile-view" data-view="subscriber">
-                <p class="card-desc">Acesse sua conta ou renove sua assinatura para continuar com o método ativo.</p>
-                <div class="card-actions">
-                    <a href="https://plataforma.gammaquant.com.br/login" class="btn btn-primary" target="_blank" rel="noopener">
-                        <span class="btn-icon">🔓</span>
-                        <span>Entrar na Plataforma</span>
-                    </a>
-                    <a href="https://plataforma.gammaquant.com.br/renovar" class="btn btn-secondary" target="_blank" rel="noopener">
-                        <span class="btn-icon">🔄</span>
-                        <span>Renovar Assinatura</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Visão VISITANTE -->
-            <div class="profile-view" data-view="visitor" hidden>
-                <p class="card-desc">Inteligência de mercado em tempo real. Skew, fluxo, gamma exposure — o método aplicado todos os dias.</p>
-                <div class="card-actions">
-                    <a href="https://plataforma.gammaquant.com.br/#oferta" class="btn btn-primary" target="_blank" rel="noopener">
-                        <span class="btn-icon">✨</span>
-                        <span>Assine Agora</span>
-                    </a>
-                    <a href="https://plataforma.gammaquant.com.br/#metodo" class="btn btn-secondary" target="_blank" rel="noopener">
-                        <span class="btn-icon">▶</span>
-                        <span>Conhecer o Método</span>
-                    </a>
-                </div>
+            <div class="card-actions">
+                <a href="https://plataforma.gammaquant.com.br/login" class="btn btn-primary" target="_blank" rel="noopener">
+                    <span class="btn-icon">🔓</span>
+                    <span>Entrar na Plataforma</span>
+                </a>
+                <a href="https://lastlink.com/p/CA29F64B9/checkout-payment/" class="btn btn-secondary" target="_blank" rel="noopener">
+                    <span class="btn-icon">🔄</span>
+                    <span>Renovar Assinatura</span>
+                </a>
+                <a href="https://plataforma.gammaquant.com.br/#oferta" class="btn btn-ghost-line" target="_blank" rel="noopener">
+                    <span class="btn-icon">✨</span>
+                    <span>Quero Assinar</span>
+                </a>
             </div>
         </section>
 
-        <!-- BLOCO 3 — CURSOS (conteúdo dinâmico por perfil) -->
+        <!-- BLOCO 3 — CURSOS -->
         <section class="card card-courses">
             <div class="card-header">
                 <span class="card-icon">🎓</span>
                 <h2 class="card-title-sm">Cursos Gamma</h2>
             </div>
+            <p class="card-desc">Formação avançada em derivativos, opções e estratégias quantitativas.</p>
 
-            <!-- Toggle de perfil aluno -->
-            <div class="profile-toggle" role="tablist" aria-label="Perfil aluno">
-                <button class="profile-btn active" data-profile-course="student" role="tab" aria-selected="true">Sou Aluno</button>
-                <button class="profile-btn" data-profile-course="lead" role="tab" aria-selected="false">Quero Comprar</button>
-            </div>
-
-            <!-- Visão ALUNO -->
-            <div class="profile-view-course" data-view-course="student">
-                <p class="card-desc">Acesse sua área de membros para continuar de onde parou.</p>
-                <div class="card-actions">
-                    <button class="btn btn-primary btn-disabled" disabled>
-                        <span class="btn-icon">📚</span>
-                        <span>Área do Aluno</span>
-                        <span class="badge-soon">em breve</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Visão LEAD -->
-            <div class="profile-view-course" data-view-course="lead" hidden>
-                <p class="card-desc">Formação avançada em derivativos, opções e estratégias quantitativas.</p>
-                <div class="card-actions">
-                    <button class="btn btn-primary btn-disabled" disabled>
-                        <span class="btn-icon">🛒</span>
-                        <span>Ver Cursos Disponíveis</span>
-                        <span class="badge-soon">em breve</span>
-                    </button>
-                </div>
+            <div class="card-actions">
+                <button class="btn btn-primary btn-disabled" disabled>
+                    <span class="btn-icon">📚</span>
+                    <span>Área do Aluno</span>
+                    <span class="badge-soon">em breve</span>
+                </button>
+                <button class="btn btn-secondary btn-disabled" disabled>
+                    <span class="btn-icon">🛒</span>
+                    <span>Ver Cursos</span>
+                    <span class="badge-soon">em breve</span>
+                </button>
             </div>
         </section>
 
@@ -238,6 +202,6 @@
 
     </div>
 
-    <script src="/js/app.js?v=8"></script>
+    <script src="/js/app.js?v=10"></script>
 </body>
 </html>
