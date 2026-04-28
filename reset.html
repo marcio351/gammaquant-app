@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Reset — Gamma Quant</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, sans-serif;
+    background: #000;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+.box {
+    max-width: 360px;
+    text-align: center;
+    background: #111;
+    border: 1px solid rgba(245, 138, 0, 0.4);
+    border-radius: 16px;
+    padding: 32px 24px;
+}
+img { width: 80px; height: 80px; border-radius: 18px; margin: 0 auto 20px; }
+h1 { font-size: 22px; margin-bottom: 8px; font-weight: 800; }
+p { color: #a8a8a8; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+.status {
+    background: #000;
+    border: 1px solid rgba(245, 138, 0, 0.3);
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 13px;
+    margin: 16px 0;
+    text-align: left;
+    line-height: 1.8;
+}
+.btn {
+    display: block;
+    width: 100%;
+    background: #f58a00;
+    color: #000;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 800;
+    text-decoration: none;
+    margin-top: 20px;
+    font-size: 15px;
+}
+.tick { color: #22c55e; }
+.x { color: #f58a00; }
+</style>
+</head>
+<body>
+<div class="box">
+    <img src="/icons/icon-192.png" alt="Gamma">
+    <h1>Reset do App</h1>
+    <p>Limpando dados antigos e cache do navegador.</p>
+    <div class="status" id="status">⏳ Iniciando...</div>
+    <a href="/" class="btn" id="goto-app" style="opacity:0.4;pointer-events:none;">Aguarde...</a>
+</div>
+
+<script>
+(async function() {
+    const status = document.getElementById('status');
+    const btn = document.getElementById('goto-app');
+    const log = [];
+    function add(msg, ok = true) {
+        log.push((ok ? '<span class="tick">✓</span>' : '<span class="x">!</span>') + ' ' + msg);
+        status.innerHTML = log.join('<br>');
+    }
+
+    // 1. Unregistra todos os service workers
+    try {
+        if ('serviceWorker' in navigator) {
+            const regs = await navigator.serviceWorker.getRegistrations();
+            for (const reg of regs) await reg.unregister();
+            add(`Service workers removidos (${regs.length})`);
+        }
+    } catch (e) { add('Service worker já estava limpo'); }
+
+    // 2. Limpa todos os caches
+    try {
+        if ('caches' in window) {
+            const keys = await caches.keys();
+            await Promise.all(keys.map(k => caches.delete(k)));
+            add(`Caches limpos (${keys.length})`);
+        }
+    } catch (e) { add('Cache já estava limpo'); }
+
+    // 3. Limpa localStorage e sessionStorage
+    try {
+        localStorage.clear();
+        sessionStorage.clear();
+        add('Dados locais limpos');
+    } catch (e) { add('Storage já estava limpo'); }
+
+    add('Pronto! Toque no botão abaixo.');
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+    btn.textContent = 'Abrir App Limpo →';
+    btn.href = '/?fresh=' + Date.now();
+})();
+</script>
+</body>
+</html>

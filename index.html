@@ -50,9 +50,9 @@
         </button>
 
         <!-- MODAL DE INSTRUÇÕES (só aparece em iOS Safari ou navegador interno) -->
-        <div class="install-modal" id="install-modal" hidden>
+        <div class="install-modal" id="install-modal" hidden onclick="if(event.target===this)this.hidden=true;document.body.style.overflow='';">
             <div class="install-modal-content">
-                <button class="install-modal-close" id="install-modal-close" aria-label="Fechar">×</button>
+                <button class="install-modal-close" id="install-modal-close" aria-label="Fechar" onclick="document.getElementById('install-modal').hidden=true;document.body.style.overflow='';">×</button>
 
                 <img src="/icons/icon-192.png" alt="Gamma" class="install-modal-icon">
                 <h3 class="install-modal-title" id="install-modal-title">Instalar Gamma Quant</h3>
@@ -62,7 +62,7 @@
                     <!-- Conteúdo injetado por JS -->
                 </div>
 
-                <button class="install-modal-dismiss" id="install-modal-dismiss">Já instalei · Fechar</button>
+                <button class="install-modal-dismiss" id="install-modal-dismiss" onclick="document.getElementById('install-modal').hidden=true;document.body.style.overflow='';try{localStorage.setItem('install-dismissed-until',String(Date.now()+30*24*60*60*1000));document.getElementById('install-banner').hidden=true;}catch(e){}">Já instalei · Fechar</button>
             </div>
         </div>
 
