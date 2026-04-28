@@ -46,54 +46,17 @@
             <span class="install-banner-arrow">→</span>
         </button>
 
-        <!-- MODAL DE INSTRUÇÕES -->
+        <!-- MODAL DE INSTRUÇÕES (só aparece em iOS Safari ou navegador interno) -->
         <div class="install-modal" id="install-modal" hidden>
             <div class="install-modal-content">
                 <button class="install-modal-close" id="install-modal-close" aria-label="Fechar">×</button>
 
                 <img src="/icons/icon-192.png" alt="Gamma" class="install-modal-icon">
-                <h3 class="install-modal-title">Instalar Gamma Quant</h3>
-                <p class="install-modal-platform" id="install-modal-platform">Detectando seu dispositivo...</p>
+                <h3 class="install-modal-title" id="install-modal-title">Instalar Gamma Quant</h3>
+                <p class="install-modal-platform" id="install-modal-platform"></p>
 
-                <!-- Instruções iOS -->
-                <div class="install-steps" data-platform="ios" hidden>
-                    <div class="install-step">
-                        <span class="install-step-num">1</span>
-                        <span>Toque no botão <strong>Compartilhar</strong> ⬆ na barra inferior do Safari</span>
-                    </div>
-                    <div class="install-step">
-                        <span class="install-step-num">2</span>
-                        <span>Role e toque em <strong>"Adicionar à Tela de Início"</strong> ➕</span>
-                    </div>
-                    <div class="install-step">
-                        <span class="install-step-num">3</span>
-                        <span>Toque em <strong>"Adicionar"</strong> no canto superior direito</span>
-                    </div>
-                </div>
-
-                <!-- Instruções Android (com prompt nativo se disponível) -->
-                <div class="install-steps" data-platform="android" hidden>
-                    <button class="btn btn-primary" id="android-install-btn">
-                        <span class="btn-icon">📥</span>
-                        <span>Instalar Agora</span>
-                    </button>
-                    <p class="install-step-fallback">
-                        Se o botão acima não funcionar:<br>
-                        Toque no menu <strong>⋮</strong> do Chrome → <strong>"Instalar app"</strong>
-                    </p>
-                </div>
-
-                <!-- Instruções Desktop -->
-                <div class="install-steps" data-platform="desktop" hidden>
-                    <button class="btn btn-primary" id="desktop-install-btn">
-                        <span class="btn-icon">📥</span>
-                        <span>Instalar Agora</span>
-                    </button>
-                    <p class="install-step-fallback">
-                        Se o botão acima não funcionar:<br>
-                        Clique no ícone <strong>⊕</strong> na barra de endereço<br>
-                        ou no menu <strong>⋮</strong> → <strong>"Instalar Gamma Quant"</strong>
-                    </p>
+                <div class="install-steps-container" id="install-steps-container">
+                    <!-- Conteúdo injetado por JS -->
                 </div>
 
                 <a href="/como-instalar.html" class="install-help-link">Ver guia completo →</a>

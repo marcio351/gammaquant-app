@@ -621,6 +621,24 @@ a { color: inherit; text-decoration: none; }
 
 .install-step-fallback strong { color: var(--orange); }
 
+.install-warning {
+    background: rgba(245, 138, 0, 0.12);
+    border: 1px solid rgba(245, 138, 0, 0.4);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    font-size: 13px;
+    color: var(--gray-100);
+    line-height: 1.5;
+    margin-bottom: 14px;
+    text-align: center;
+}
+.install-warning strong { color: var(--orange); }
+
+.install-steps-container .btn {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
 .install-help-link {
     display: inline-block;
     margin-top: 8px;
