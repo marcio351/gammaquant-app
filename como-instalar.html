@@ -337,6 +337,52 @@
             .picker-btn { font-size: 14px; padding: 16px 8px; }
             .picker-btn .ic { font-size: 28px; }
         }
+
+        /* PDF DOWNLOAD CTA */
+        .pdf-cta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 2px solid var(--orange);
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 22px;
+            text-decoration: none;
+            color: var(--gray-100);
+            box-shadow: 0 6px 20px rgba(245, 138, 0, 0.18);
+            transition: var(--transition);
+        }
+        .pdf-cta:active {
+            transform: scale(0.98);
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+        }
+        .pdf-cta-icon {
+            flex-shrink: 0;
+            width: 46px; height: 46px;
+            border-radius: 12px;
+            background: var(--orange);
+            color: var(--black);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 4px 12px rgba(245, 138, 0, 0.4);
+        }
+        .pdf-cta-text {
+            flex: 1;
+            display: flex; flex-direction: column; gap: 3px;
+        }
+        .pdf-cta-text strong {
+            font-size: 15px; font-weight: 800;
+            color: var(--orange);
+        }
+        .pdf-cta-text span {
+            font-size: 11px; color: var(--gray-300);
+            line-height: 1.3;
+        }
+        .pdf-cta-arrow {
+            font-size: 22px; color: var(--orange);
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
@@ -356,6 +402,16 @@
             Se você está vendo isto pelo <strong>WhatsApp ou Instagram</strong>, NÃO vai funcionar.
             Toque nos 3 pontinhos (⋮) e escolha <strong>"Abrir no navegador"</strong> primeiro.
         </div>
+
+        <!-- BOTÃO BAIXAR PDF -->
+        <a href="/Tutorial_App_Gamma_Quant.pdf" class="pdf-cta" target="_blank" rel="noopener" download>
+            <span class="pdf-cta-icon">📄</span>
+            <span class="pdf-cta-text">
+                <strong>Baixar Tutorial em PDF</strong>
+                <span>Versão impressa com botões clicáveis · 8 páginas · 808 KB</span>
+            </span>
+            <span class="pdf-cta-arrow">⬇</span>
+        </a>
 
         <!-- DEVICE PICKER -->
         <div class="picker" role="tablist">
