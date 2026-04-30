@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>App Gamma Quant — Publicação nas Lojas</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Helvetica', 'Arial', sans-serif; color: #1a1a1a; }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    padding: 18mm 16mm;
+    page-break-after: always;
+    position: relative;
+    background: white;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  .cover {
+    background: linear-gradient(135deg, #0a1628 0%, #1a2942 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 30mm 20mm;
+  }
+  .cover .tag {
+    font-size: 11pt;
+    letter-spacing: 4px;
+    color: #d4af37;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .cover h1 {
+    font-size: 38pt;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .cover .sub {
+    font-size: 16pt;
+    color: #b8c5d6;
+    margin-bottom: 60px;
+    line-height: 1.4;
+  }
+  .cover .meta {
+    border-top: 2px solid #d4af37;
+    padding-top: 20px;
+    font-size: 11pt;
+    color: #b8c5d6;
+  }
+  .cover .meta strong { color: white; }
+
+  h2 {
+    font-size: 22pt;
+    color: #0a1628;
+    margin-bottom: 8px;
+    font-weight: 800;
+  }
+  h2 .num {
+    color: #d4af37;
+    margin-right: 12px;
+  }
+  .subtitle {
+    font-size: 12pt;
+    color: #6b7280;
+    margin-bottom: 30px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  h3 {
+    font-size: 14pt;
+    color: #0a1628;
+    margin: 24px 0 12px;
+    font-weight: 700;
+  }
+  p { font-size: 11pt; line-height: 1.6; color: #374151; margin-bottom: 12px; }
+
+  .lead {
+    font-size: 13pt;
+    line-height: 1.6;
+    color: #1a1a1a;
+    background: #f9fafb;
+    border-left: 4px solid #d4af37;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .card .icon {
+    font-size: 22pt;
+    margin-bottom: 10px;
+  }
+  .card h4 {
+    font-size: 12pt;
+    color: #0a1628;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .card p { font-size: 10pt; margin: 0; }
+
+  .platform-card {
+    border-radius: 10px;
+    padding: 22px;
+    color: white;
+  }
+  .platform-card.android { background: linear-gradient(135deg, #2d8f4e 0%, #1f6b3a 100%); }
+  .platform-card.ios { background: linear-gradient(135deg, #1a1a1a 0%, #404040 100%); }
+  .platform-card .label { font-size: 9pt; letter-spacing: 2px; opacity: 0.7; text-transform: uppercase; }
+  .platform-card h3 { color: white; font-size: 18pt; margin: 6px 0 14px; }
+  .platform-card .price { font-size: 24pt; font-weight: 800; margin-bottom: 4px; }
+  .platform-card .price-detail { font-size: 10pt; opacity: 0.85; margin-bottom: 16px; }
+  .platform-card ul { list-style: none; }
+  .platform-card li {
+    font-size: 10pt;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    line-height: 1.4;
+  }
+  .platform-card li:last-child { border: none; }
+  .platform-card li::before { content: "✓ "; color: #d4af37; font-weight: bold; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 10.5pt;
+  }
+  th {
+    background: #0a1628;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 10pt;
+  }
+  td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+  }
+  tr:nth-child(even) td { background: #f9fafb; }
+  td.highlight { color: #0a1628; font-weight: 700; }
+  td.price { color: #2d8f4e; font-weight: 700; text-align: right; }
+
+  .timeline {
+    position: relative;
+    padding-left: 30px;
+    margin: 20px 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: #d4af37;
+  }
+  .step {
+    position: relative;
+    margin-bottom: 18px;
+  }
+  .step::before {
+    content: '';
+    position: absolute;
+    left: -27px;
+    top: 4px;
+    width: 18px;
+    height: 18px;
+    background: #d4af37;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 1px #d4af37;
+  }
+  .step h4 {
+    font-size: 12pt;
+    color: #0a1628;
+    margin-bottom: 4px;
+  }
+  .step p { font-size: 10.5pt; margin: 0; color: #6b7280; }
+
+  .total-box {
+    background: linear-gradient(135deg, #0a1628 0%, #1a2942 100%);
+    color: white;
+    border-radius: 10px;
+    padding: 28px;
+    text-align: center;
+    margin: 24px 0;
+  }
+  .total-box .label {
+    font-size: 11pt;
+    color: #d4af37;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .total-box .value {
+    font-size: 38pt;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .total-box .detail {
+    font-size: 11pt;
+    color: #b8c5d6;
+  }
+
+  .recommendation {
+    background: #fef3c7;
+    border: 2px solid #d4af37;
+    border-radius: 10px;
+    padding: 22px;
+    margin: 20px 0;
+  }
+  .recommendation .badge {
+    background: #d4af37;
+    color: #0a1628;
+    font-size: 9pt;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 4px;
+    display: inline-block;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .recommendation h3 { margin-top: 0; }
+
+  .footer {
+    position: absolute;
+    bottom: 12mm;
+    left: 16mm;
+    right: 16mm;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9pt;
+    color: #9ca3af;
+  }
+
+  .check-list { list-style: none; padding: 0; }
+  .check-list li {
+    padding: 10px 0 10px 32px;
+    font-size: 11pt;
+    position: relative;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    color: #2d8f4e;
+    font-weight: 800;
+    font-size: 14pt;
+  }
+
+  .x-list li::before { content: '✕'; color: #dc2626; }
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="page cover">
+  <div class="tag">Proposta Técnica</div>
+  <h1>App Gamma Quant<br>nas Lojas Oficiais</h1>
+  <div class="sub">Publicação na Google Play Store e Apple App Store<br>com base no app já existente (PWA)</div>
+  <div class="meta">
+    <strong>Cliente:</strong> Gamma Quant<br>
+    <strong>Data:</strong> 29 de Abril de 2026<br>
+    <strong>Status atual:</strong> App em produção em app.gammaquant.com.br
+  </div>
+</div>
+
+<!-- PÁGINA 1 - SITUAÇÃO ATUAL -->
+<div class="page">
+  <h2><span class="num">01</span>Situação Atual</h2>
+  <div class="subtitle">Onde estamos hoje</div>
+
+  <div class="lead">
+    O App Gamma Quant <strong>já existe e está funcionando</strong> em app.gammaquant.com.br como PWA (Progressive Web App). Os usuários conseguem instalar via navegador, mas o app <strong>ainda não aparece nas lojas oficiais</strong> da Apple e do Google.
+  </div>
+
+  <h3>O que é um PWA?</h3>
+  <p>É um aplicativo web que se comporta como app nativo. O usuário acessa pelo navegador e adiciona à tela inicial. Funciona, mas tem limitações:</p>
+
+  <ul class="check-list x-list">
+    <li>Não aparece na busca da Play Store ou App Store</li>
+    <li>Usuário precisa ser ensinado a instalar (atrito alto)</li>
+    <li>Não transmite a mesma autoridade de um app oficial</li>
+    <li>Sem distribuição orgânica via lojas</li>
+  </ul>
+
+  <h3>A boa notícia</h3>
+  <p>Como o PWA já está pronto e validado, <strong>não precisamos reescrever nada do zero</strong>. Podemos empacotar o app existente e publicá-lo nas duas lojas oficiais usando tecnologia consolidada (Trusted Web Activity / Capacitor).</p>
+
+  <p>Vantagem extra: <strong>toda atualização feita no site reflete automaticamente no app</strong>, sem precisar submeter nova versão à loja.</p>
+
+  <div class="footer">
+    <span>App Gamma Quant — Publicação nas Lojas</span>
+    <span>Página 1</span>
+  </div>
+</div>
+
+<!-- PÁGINA 2 - O QUE GANHAMOS -->
+<div class="page">
+  <h2><span class="num">02</span>Por que publicar nas lojas</h2>
+  <div class="subtitle">Os 6 ganhos diretos</div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="icon">📱</div>
+      <h4>Instalação em 1 clique</h4>
+      <p>O usuário busca "Gamma Quant" na loja e instala. Acaba o atrito de explicar como adicionar à tela inicial.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🏆</div>
+      <h4>Autoridade institucional</h4>
+      <p>App listado na Apple e no Google transmite credibilidade de marca consolidada.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔍</div>
+      <h4>Descoberta orgânica</h4>
+      <p>Pessoas pesquisando "investimentos", "opções", "trading" podem encontrar o app naturalmente.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔔</div>
+      <h4>Notificações nativas</h4>
+      <p>Push notifications mais confiáveis no iOS e melhor entrega em ambas plataformas.</p>
+    </div>
+    <div class="card">
+      <div class="icon">⭐</div>
+      <h4>Avaliações públicas</h4>
+      <p>Reviews de 5 estrelas viram prova social automática para novos usuários.</p>
+    </div>
+    <div class="card">
+      <div class="icon">📊</div>
+      <h4>Métricas oficiais</h4>
+      <p>Dashboard de instalações, retenção, crashes e engajamento direto da loja.</p>
+    </div>
+  </div>
+
+  <div class="recommendation">
+    <div class="badge">Visão de Mercado</div>
+    <h3>Apps de finanças e trading</h3>
+    <p style="margin: 0;">No nicho de educação financeira e trading, ter app nas lojas <strong>deixou de ser diferencial e virou expectativa</strong>. Concorrentes diretos (XP, Genial, Toro, Empiricus) têm presença consolidada nas duas plataformas.</p>
+  </div>
+
+  <div class="footer">
+    <span>App Gamma Quant — Publicação nas Lojas</span>
+    <span>Página 2</span>
+  </div>
+</div>
+
+<!-- PÁGINA 3 - COMO VAMOS FAZER -->
+<div class="page">
+  <h2><span class="num">03</span>Como vamos fazer</h2>
+  <div class="subtitle">Tecnologia e abordagem</div>
+
+  <p>Vamos usar a ferramenta oficial recomendada pelo Google e pela Microsoft chamada <strong>PWABuilder</strong>. Ela pega o app web existente e gera os pacotes prontos para subir nas duas lojas.</p>
+
+  <h3>Para Android (Google Play)</h3>
+  <p>Empacotamento via <strong>Trusted Web Activity (TWA)</strong> — padrão oficial do Google para transformar PWAs em apps Android. Resultado: app nativo idêntico ao site, com a mesma performance.</p>
+
+  <h3>Para iOS (App Store)</h3>
+  <p>Empacotamento via <strong>Capacitor</strong> — wrapper nativo que permite publicar na App Store mantendo a base do PWA. Estratégia validada por milhares de apps no mercado.</p>
+
+  <h3>Vantagem técnica decisiva</h3>
+  <div class="lead">
+    Toda atualização feita em app.gammaquant.com.br <strong>aparece automaticamente no app das duas lojas</strong>, sem precisar submeter nova versão. Manutenção zero pós-publicação.
+  </div>
+
+  <h3>O que NÃO precisa ser feito</h3>
+  <ul class="check-list x-list">
+    <li>Reescrever o app em React Native, Flutter ou Swift/Kotlin</li>
+    <li>Manter três bases de código separadas</li>
+    <li>Recontratar designer ou refazer interface</li>
+    <li>Pausar atualizações do site durante o processo</li>
+  </ul>
+
+  <div class="footer">
+    <span>App Gamma Quant — Publicação nas Lojas</span>
+    <span>Página 3</span>
+  </div>
+</div>
+
+<!-- PÁGINA 4 - INVESTIMENTO -->
+<div class="page">
+  <h2><span class="num">04</span>Investimento</h2>
+  <div class="subtitle">Custos diretos das lojas oficiais</div>
+
+  <div class="grid-2">
+    <div class="platform-card android">
+      <div class="label">Android</div>
+      <h3>Google Play Store</h3>
+      <div class="price">R$ 130</div>
+      <div class="price-detail">Taxa única vitalícia (US$ 25)</div>
+      <ul>
+        <li>Conta Google Play Console</li>
+        <li>Publicações ilimitadas no futuro</li>
+        <li>Review mais rápida (2 a 7 dias)</li>
+        <li>Cobertura de 80% do público brasileiro</li>
+        <li>Dashboard completo de métricas</li>
+      </ul>
+    </div>
+
+    <div class="platform-card ios">
+      <div class="label">iOS</div>
+      <h3>Apple App Store</h3>
+      <div class="price">R$ 500</div>
+      <div class="price-detail">Anuidade (US$ 99/ano)</div>
+      <ul>
+        <li>Conta Apple Developer Program</li>
+        <li>Publicações ilimitadas no futuro</li>
+        <li>Review mais rigorosa (1 a 3 dias)</li>
+        <li>Público iOS premium (alto poder aquisitivo)</li>
+        <li>Renovação anual obrigatória</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Tabela consolidada</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Frequência</th>
+        <th style="text-align: right;">Valor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="highlight">Google Play Console</td>
+        <td>Pagamento único</td>
+        <td class="price">R$ 130</td>
+      </tr>
+      <tr>
+        <td class="highlight">Apple Developer Program</td>
+        <td>Anual (renovação obrigatória)</td>
+        <td class="price">R$ 500</td>
+      </tr>
+      <tr>
+        <td class="highlight">PWABuilder + ferramentas</td>
+        <td>Gratuito</td>
+        <td class="price">R$ 0</td>
+      </tr>
+      <tr>
+        <td class="highlight">Hospedagem do app web</td>
+        <td>Já paga (Cloudflare)</td>
+        <td class="price">R$ 0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="total-box">
+    <div class="label">Investimento Total — Ano 1</div>
+    <div class="value">R$ 630</div>
+    <div class="detail">Ano 2 em diante: apenas R$ 500/ano (renovação Apple)</div>
+  </div>
+
+  <div class="footer">
+    <span>App Gamma Quant — Publicação nas Lojas</span>
+    <span>Página 4</span>
+  </div>
+</div>
+
+<!-- PÁGINA 5 - CRONOGRAMA -->
+<div class="page">
+  <h2><span class="num">05</span>Cronograma de execução</h2>
+  <div class="subtitle">Do aceite à publicação nas lojas</div>
+
+  <h3>Fase 1 — Android (Google Play)</h3>
+  <div class="timeline">
+    <div class="step">
+      <h4>Dia 1 — Auditoria e empacotamento</h4>
+      <p>Validação do PWA, geração do pacote AAB via PWABuilder, criação da conta Google Play Console.</p>
+    </div>
+    <div class="step">
+      <h4>Dia 2 — Submissão</h4>
+      <p>Upload do pacote, preenchimento da ficha (descrição, screenshots, política de privacidade, classificação etária).</p>
+    </div>
+    <div class="step">
+      <h4>Dias 3 a 9 — Review do Google</h4>
+      <p>Análise automática e manual da Google. Tempo médio: 2 a 7 dias.</p>
+    </div>
+    <div class="step">
+      <h4>Dia 10 — App publicado no Android</h4>
+      <p>App disponível para download na Google Play Store.</p>
+    </div>
+  </div>
+
+  <h3>Fase 2 — iOS (App Store)</h3>
+  <div class="timeline">
+    <div class="step">
+      <h4>Dia 11 — Empacotamento iOS</h4>
+      <p>Geração do projeto Xcode via PWABuilder, criação da conta Apple Developer.</p>
+    </div>
+    <div class="step">
+      <h4>Dias 12 a 14 — Build e assinatura</h4>
+      <p>Compilação, assinatura digital, geração de screenshots em múltiplas resoluções.</p>
+    </div>
+    <div class="step">
+      <h4>Dia 15 — Submissão</h4>
+      <p>Upload via App Store Connect, preenchimento de ficha e metadados.</p>
+    </div>
+    <div class="step">
+      <h4>Dias 16 a 21 — Review da Apple</h4>
+      <p>Análise rigorosa da Apple. Tempo médio: 1 a 3 dias úteis.</p>
+    </div>
+    <div class="step">
+      <h4>Dia 22 — App publicado no iOS</h4>
+      <p>App disponível para download na Apple App Store.</p>
+    </div>
+  </div>
+
+  <div class="lead" style="margin-top: 24px;">
+    <strong>Prazo total estimado:</strong> 3 a 4 semanas do aceite à publicação completa nas duas lojas, considerando os tempos de review oficiais.
+  </div>
+
+  <div class="footer">
+    <span>App Gamma Quant — Publicação nas Lojas</span>
+    <span>Página 5</span>
+  </div>
+</div>
+
+<!-- PÁGINA 6 - RECOMENDAÇÃO E PRÓXIMOS PASSOS -->
+<div class="page">
+  <h2><span class="num">06</span>Recomendação e próximos passos</h2>
+  <div class="subtitle">Caminho sugerido</div>
+
+  <div class="recommendation">
+    <div class="badge">Recomendação</div>
+    <h3>Começar pelo Android, fazer iOS em sequência</h3>
+    <p style="margin: 0;">Android é mais barato (taxa única), tem review mais flexível e cobre 80% do público brasileiro. Validamos o processo na Google Play primeiro e, com o app rodando, partimos para a App Store sem riscos.</p>
+  </div>
+
+  <h3>Resumo executivo</h3>
+  <table>
+    <tr>
+      <td class="highlight">App existente?</td>
+      <td>Sim, em produção (PWA validado)</td>
+    </tr>
+    <tr>
+      <td class="highlight">Precisa reescrever?</td>
+      <td>Não. Empacotamos o existente.</td>
+    </tr>
+    <tr>
+      <td class="highlight">Investimento ano 1</td>
+      <td class="price">R$ 630</td>
+    </tr>
+    <tr>
+      <td class="highlight">Investimento ano 2+</td>
+      <td class="price">R$ 500/ano</td>
+    </tr>
+    <tr>
+      <td class="highlight">Prazo total</td>
+      <td>3 a 4 semanas</td>
+    </tr>
+    <tr>
+      <td class="highlight">Manutenção pós-publicação</td>
+      <td>Zero (atualização automática via site)</td>
+    </tr>
+  </table>
+
+  <h3>Para iniciar</h3>
+  <ol style="padding-left: 20px; margin-top: 12px;">
+    <li style="font-size: 11pt; line-height: 1.8; color: #374151;"><strong>Aprovação da proposta</strong> e liberação do investimento de R$ 630</li>
+    <li style="font-size: 11pt; line-height: 1.8; color: #374151;"><strong>Cartão internacional</strong> para criar as contas Google Play Console e Apple Developer</li>
+    <li style="font-size: 11pt; line-height: 1.8; color: #374151;"><strong>Acesso ao domínio</strong> app.gammaquant.com.br (já temos)</li>
+    <li style="font-size: 11pt; line-height: 1.8; color: #374151;"><strong>Política de privacidade</strong> publicada (se ainda não existir, criamos)</li>
+    <li style="font-size: 11pt; line-height: 1.8; color: #374151;"><strong>Início imediato</strong> da Fase 1 — Android</li>
+  </ol>
+
+  <div class="total-box" style="margin-top: 30px;">
+    <div class="label">Próximo Passo</div>
+    <div class="value" style="font-size: 22pt;">Aprovar para iniciar</div>
+    <div class="detail">App nas duas lojas em até 4 semanas</div>
+  </div>
+
+  <div class="footer">
+    <span>App Gamma Quant — Publicação nas Lojas</span>
+    <span>Página 6</span>
+  </div>
+</div>
+
+</body>
+</html>

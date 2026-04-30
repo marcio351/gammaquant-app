@@ -5,7 +5,7 @@
 // ===== 1. SERVICE WORKER =====
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=12').then(reg => {
+        navigator.serviceWorker.register('/sw.js?v=13').then(reg => {
             reg.update();
         }).catch(err => console.warn('SW falhou:', err));
     });
@@ -22,10 +22,30 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
 window.addEventListener('appinstalled', () => {
     deferredInstallPrompt = null;
+    markAsInstalled();
+    hideInstallBanner();
+});
+
+function markAsInstalled() {
+    try {
+        localStorage.setItem('gamma-installed', '1');
+        localStorage.setItem('install-dismissed-until', String(Date.now() + 1000 * 60 * 60 * 24 * 365));
+    } catch(e) {}
+}
+
+function hideInstallBanner() {
     const banner = document.getElementById('install-banner');
     if (banner) banner.hidden = true;
-    try { localStorage.setItem('install-dismissed-until', String(Date.now() + 1000 * 60 * 60 * 24 * 365)); } catch(e) {}
-});
+}
+
+function isAppInstalled() {
+    if (window.matchMedia('(display-mode: standalone)').matches) return true;
+    if (window.navigator.standalone === true) return true;
+    try {
+        if (localStorage.getItem('gamma-installed') === '1') return true;
+    } catch(e) {}
+    return false;
+}
 
 // ===== 2. PROTOCOLO DO DIA =====
 async function loadProtocol() {
@@ -100,23 +120,42 @@ function updateMarketStatus() {
     }
 }
 
-// ===== 4. BANNER DE INSTALAÇÃO =====
-function setupInstallBanner() {
+// ===== 4. BANNER DE INSTALAÇÃO (com detecção robusta) =====
+async function setupInstallBanner() {
     const banner = document.getElementById('install-banner');
     if (!banner) return;
 
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
-        || window.navigator.standalone === true;
+    // 1) Já está rodando como app instalado (standalone)?
+    if (isAppInstalled()) {
+        banner.hidden = true;
+        markAsInstalled();
+        return;
+    }
 
-    if (isStandalone) return;
+    // 2) API moderna: getInstalledRelatedApps detecta PWA já instalado
+    //    mesmo quando o user abre pelo browser
+    if (navigator.getInstalledRelatedApps) {
+        try {
+            const related = await navigator.getInstalledRelatedApps();
+            if (related && related.length > 0) {
+                banner.hidden = true;
+                markAsInstalled();
+                return;
+            }
+        } catch(e) { /* ignora se API não suportada */ }
+    }
 
+    // 3) Flag manual de "já dispensado por 1 ano"
     let dismissed = false;
     try {
         const until = parseInt(localStorage.getItem('install-dismissed-until') || '0', 10);
         if (until && Date.now() < until) dismissed = true;
     } catch(e) {}
 
-    if (dismissed) return;
+    if (dismissed) {
+        banner.hidden = true;
+        return;
+    }
 
     const ua = navigator.userAgent;
     const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
@@ -131,6 +170,7 @@ function setupInstallBanner() {
                 const choice = await deferredInstallPrompt.userChoice;
                 deferredInstallPrompt = null;
                 if (choice && choice.outcome === 'accepted') {
+                    markAsInstalled();
                     banner.hidden = true;
                 } else {
                     window.location.href = '/como-instalar.html';
@@ -151,6 +191,34 @@ function setupInstallBanner() {
     banner.hidden = false;
 }
 
+// ===== 5. INTERCEPTAÇÃO DE LINKS (não perder o app no desktop) =====
+function setupLinkInterception() {
+    const standalone = isAppInstalled();
+    if (!standalone) return; // No browser comum, deixa comportamento default
+
+    document.addEventListener('click', (ev) => {
+        const link = ev.target.closest('a[href]');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+
+        const target = link.getAttribute('target');
+        if (target !== '_blank') return; // só intercepta target=_blank
+
+        // Em PWA standalone, window.open mantém foco no contexto do app
+        // e evita que o link abra em outro monitor
+        ev.preventDefault();
+        try {
+            const w = window.open(href, '_blank', 'noopener,noreferrer');
+            if (w) w.focus();
+        } catch(e) {
+            // Fallback: navega no contexto atual
+            window.location.href = href;
+        }
+    });
+}
+
 // ===== 6. VERSÃO + NOTIFICAÇÃO DE ATUALIZAÇÃO =====
 async function checkVersion() {
     try {
@@ -158,21 +226,17 @@ async function checkVersion() {
         if (!res.ok) return;
         const { version, date, build } = await res.json();
 
-        // Atualiza display da versão no footer
         const footerEl = document.getElementById('footer-version');
         if (footerEl) footerEl.textContent = `v${version}`;
 
-        // Compara com versão vista anteriormente
         let lastSeen = null;
         try { lastSeen = localStorage.getItem('last-seen-build'); } catch(e) {}
 
-        // Primeira visita: só registra (não mostra toast)
         if (!lastSeen) {
             try { localStorage.setItem('last-seen-build', build); } catch(e) {}
             return;
         }
 
-        // Build mudou: mostra toast
         if (lastSeen !== build) {
             showUpdateToast();
             try { localStorage.setItem('last-seen-build', build); } catch(e) {}
@@ -196,8 +260,17 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateMarketStatus, 1000);
 
     setupInstallBanner();
+    setupLinkInterception();
     checkVersion();
 
     setInterval(loadProtocol, 5 * 60 * 1000);
-    setInterval(checkVersion, 5 * 60 * 1000); // checa atualização a cada 5min
+    setInterval(checkVersion, 5 * 60 * 1000);
+});
+
+// Re-checa banner quando display-mode muda (ex: user instala em outra aba)
+window.matchMedia('(display-mode: standalone)').addEventListener('change', (e) => {
+    if (e.matches) {
+        markAsInstalled();
+        hideInstallBanner();
+    }
 });

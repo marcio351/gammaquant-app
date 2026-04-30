@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#000000">
     <title>Como instalar o app — Gamma Quant</title>
-    <meta name="description" content="Passo a passo ilustrado para instalar o app Gamma Quant no Android, iPhone e computador. Inclui como atualizar e tirar dúvidas comuns.">
+    <meta name="description" content="Passo a passo super simples para instalar o app Gamma Quant. Para Android, iPhone e Computador.">
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" sizes="64x64" href="/icons/favicon-64.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
@@ -14,7 +14,6 @@
     <meta name="apple-mobile-web-app-title" content="Gamma Quant">
     <meta name="mobile-web-app-capable" content="yes">
 
-    <!-- Se aberto como app instalado, redireciona pro principal -->
     <script>
     (function(){
         var isStandalone = window.matchMedia('(display-mode: standalone)').matches
@@ -26,712 +25,719 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/app.css?v=12">
+    <link rel="stylesheet" href="/css/app.css?v=13">
 
     <style>
         body { background: var(--black); }
-        .install-page { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+        .page { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
 
         /* HERO */
-        .install-hero { text-align: center; padding: 16px 0 24px; }
-        .install-hero img {
-            width: 88px; height: 88px; border-radius: 22px;
-            margin: 0 auto 16px;
-            box-shadow: 0 12px 40px rgba(245, 138, 0, 0.25);
+        .hero { text-align: center; padding: 8px 0 28px; }
+        .hero-icon {
+            width: 96px; height: 96px; border-radius: 22px;
+            margin: 0 auto 18px; display: block;
+            box-shadow: 0 14px 44px rgba(245, 138, 0, 0.3);
         }
-        .install-hero h1 {
-            font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
-            margin-bottom: 8px;
+        .hero h1 {
+            font-size: 30px; font-weight: 900; letter-spacing: -0.6px;
+            margin-bottom: 12px; line-height: 1.1;
         }
-        .install-hero p { color: var(--gray-300); font-size: 14px; line-height: 1.5; }
-        .install-hero .badge {
-            display: inline-block;
-            background: var(--orange-soft); color: var(--orange);
-            border: 1px solid rgba(245, 138, 0, 0.3);
-            padding: 6px 12px; border-radius: 100px;
-            font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-            margin-top: 14px;
-        }
+        .hero h1 .highlight { color: var(--orange); }
+        .hero p { color: var(--gray-300); font-size: 15px; line-height: 1.6; max-width: 480px; margin: 0 auto; }
 
-        /* ABAS */
-        .platform-tabs {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 6px; background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 100px; padding: 6px;
-            margin: 18px 0 24px;
-            position: sticky; top: 8px; z-index: 10;
+        /* TIME BADGE */
+        .time-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(34, 197, 94, 0.12);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            border-radius: 100px; padding: 8px 16px;
+            font-size: 13px; font-weight: 700;
+            margin-bottom: 18px;
+        }
+        .time-badge::before { content: '⏱'; font-size: 16px; }
+
+        /* DEVICE PICKER */
+        .picker {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+            background: var(--black-card); border: 1px solid var(--border);
+            border-radius: 18px; padding: 8px;
+            margin-bottom: 28px;
+            position: sticky; top: 12px; z-index: 50;
             backdrop-filter: blur(12px);
         }
-        .platform-tab {
-            padding: 12px 8px; border-radius: 100px;
-            font-weight: 700; font-size: 13px;
-            color: var(--gray-300); background: transparent; border: none;
-            transition: var(--transition); cursor: pointer; text-align: center;
+        .picker-btn {
+            padding: 14px 8px; border-radius: 12px;
+            font-size: 13px; font-weight: 800;
+            color: var(--gray-300); background: transparent;
+            transition: var(--transition);
+            display: flex; flex-direction: column; gap: 6px; align-items: center;
+            line-height: 1.1;
         }
-        .platform-tab.active {
+        .picker-btn .ic { font-size: 24px; }
+        .picker-btn.active {
             background: var(--orange); color: var(--black);
-            box-shadow: 0 4px 12px rgba(245, 138, 0, 0.3);
+            box-shadow: 0 6px 18px rgba(245, 138, 0, 0.35);
+        }
+        .picker-btn:not(.active):active { background: var(--black-elev); color: var(--gray-100); }
+
+        .panel { display: none; animation: fadeIn 0.3s ease; }
+        .panel.active { display: block; }
+
+        /* AVISO IMPORTANTE */
+        .warn-big {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            border-radius: 14px;
+            padding: 18px 18px 18px 60px;
+            margin-bottom: 24px;
+            position: relative;
+            font-size: 14px; line-height: 1.55; color: var(--gray-100);
+        }
+        .warn-big::before {
+            content: '⚠️'; position: absolute; left: 18px; top: 18px;
+            font-size: 26px; line-height: 1;
+        }
+        .warn-big strong { color: #ff6b6b; display: block; margin-bottom: 4px; font-size: 15px; }
+
+        .tip-big {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
+            padding: 14px 14px 14px 48px;
+            margin: 14px 0;
+            position: relative;
+            font-size: 13px; line-height: 1.5; color: var(--gray-100);
+        }
+        .tip-big::before {
+            content: '💡'; position: absolute; left: 14px; top: 12px;
+            font-size: 22px;
         }
 
-        /* SEÇÕES POR PLATAFORMA */
-        .platform-section { display: none; animation: fadeIn 0.3s ease; }
-        .platform-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-
-        /* PASSOS */
+        /* STEP CARD */
         .step {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px; margin-bottom: 14px;
+            background: var(--black-card); border: 1px solid var(--border);
+            border-radius: 18px; padding: 22px;
+            margin-bottom: 16px;
+            position: relative;
         }
         .step-head {
-            display: flex; gap: 14px; align-items: center;
+            display: flex; align-items: center; gap: 14px;
             margin-bottom: 14px;
         }
         .step-num {
-            flex-shrink: 0; width: 36px; height: 36px;
-            border-radius: 50%;
-            background: var(--orange); color: var(--black);
+            flex-shrink: 0;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--orange), var(--orange-hover));
+            color: var(--black); font-weight: 900; font-size: 22px;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 16px;
+            box-shadow: 0 6px 16px rgba(245, 138, 0, 0.4);
         }
-        .step-num.done { background: #10b981; color: #fff; }
         .step-title {
-            font-size: 17px; font-weight: 700; color: var(--gray-100);
-            line-height: 1.3;
+            font-size: 18px; font-weight: 800; letter-spacing: -0.2px;
+            line-height: 1.25;
         }
         .step-desc {
-            color: var(--gray-300); font-size: 14px; line-height: 1.6;
-            margin-bottom: 12px;
+            color: var(--gray-300); font-size: 14px; line-height: 1.55;
+            margin-bottom: 14px;
         }
-        .step-desc strong { color: #fff; }
+        .step-desc strong { color: var(--orange); font-weight: 700; }
 
-        /* MOCKUPS visuais — telas falsas pra ilustrar */
-        .mock {
-            background: #0a0a0a;
-            border: 1px solid var(--gray-700);
-            border-radius: 14px;
-            padding: 14px;
-            margin-top: 10px;
+        /* PHONE MOCKUP (ilustração) */
+        .phone {
+            width: 240px; max-width: 100%; aspect-ratio: 9 / 19;
+            margin: 0 auto 6px;
+            background: #0a0a0a; border: 8px solid #2a2a2a;
+            border-radius: 36px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.04);
+            overflow: hidden;
+        }
+        .phone::before {
+            content: ''; position: absolute; top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 80px; height: 18px;
+            background: #000; border-radius: 0 0 12px 12px;
+            z-index: 5;
+        }
+        .phone-screen {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            padding: 32px 12px 12px;
+            display: flex; flex-direction: column;
+            font-size: 10px;
+        }
+        .url-bar {
+            background: #2a2a2a; border-radius: 100px;
+            padding: 6px 10px; font-size: 9px;
+            color: #aaa; display: flex; align-items: center; gap: 6px;
+            margin-bottom: 6px;
+        }
+        .url-bar .lock { color: var(--green); font-size: 8px; }
+        .url-bar .three-dots {
+            margin-left: auto; font-size: 14px; color: #fff;
             position: relative;
         }
-        .mock-label {
-            position: absolute; top: -10px; left: 14px;
+        .url-bar .three-dots.target {
             background: var(--orange); color: var(--black);
-            font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
-            padding: 3px 10px; border-radius: 6px;
-        }
-        .mock-bar {
-            display: flex; align-items: center; gap: 8px;
-            background: #1a1a1a; padding: 10px 12px;
-            border-radius: 8px; margin-bottom: 10px;
-            font-size: 12px; color: var(--gray-300);
-        }
-        .mock-bar-icon {
-            width: 22px; height: 22px;
-            background: var(--gray-700); border-radius: 4px;
+            border-radius: 50%; width: 22px; height: 22px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 14px; flex-shrink: 0;
+            box-shadow: 0 0 0 0 rgba(245, 138, 0, 0.7);
+            animation: pulseRing 1.5s infinite;
         }
-        .mock-bar-url {
-            background: #2a2a2a; padding: 6px 10px; border-radius: 100px;
-            flex: 1; font-size: 11px; color: var(--gray-100);
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        @keyframes pulseRing {
+            0% { box-shadow: 0 0 0 0 rgba(245, 138, 0, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(245, 138, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 138, 0, 0); }
         }
-        .mock-highlight {
-            background: var(--orange-soft);
-            border: 2px dashed var(--orange);
-            border-radius: 10px;
+
+        .phone-content {
+            flex: 1; background: #fff; border-radius: 6px;
+            padding: 8px;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .phone-content.dark { background: #1a1a1a; }
+        .phone-line { background: #e0e0e0; height: 6px; border-radius: 2px; }
+        .phone-line.dark-bg { background: #333; }
+        .phone-line.short { width: 40%; }
+        .phone-line.med { width: 70%; }
+        .phone-line.orange { background: var(--orange); height: 8px; width: 60%; }
+
+        /* MENU dropdown sobre o phone */
+        .phone-menu {
+            position: absolute; top: 50px; right: 8px;
+            background: #fff; border-radius: 8px;
+            padding: 6px 0; width: 130px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            z-index: 4;
+            font-size: 9px; color: #222;
+        }
+        .phone-menu .item {
+            padding: 7px 10px;
+            display: flex; align-items: center; gap: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        .phone-menu .item:last-child { border-bottom: none; }
+        .phone-menu .item.target {
+            background: rgba(245, 138, 0, 0.18);
+            color: #c66800; font-weight: 700;
+        }
+        .phone-menu .item .ic { font-size: 12px; }
+
+        /* MODAL fake (Adicionar à tela inicial) */
+        .phone-dialog {
+            position: absolute; bottom: 16px; left: 8px; right: 8px;
+            background: #fff; border-radius: 12px;
             padding: 12px;
-            text-align: center;
-            font-weight: 700;
-            color: var(--orange);
-            font-size: 14px;
-            position: relative;
-        }
-        .mock-highlight::after {
-            content: '👆';
-            position: absolute;
-            right: 14px; top: 50%; transform: translateY(-50%);
-            font-size: 22px;
-            animation: tap 1.4s ease-in-out infinite;
-        }
-        @keyframes tap { 0%, 100% { transform: translateY(-50%) scale(1); } 50% { transform: translateY(-50%) scale(1.15); } }
-        .mock-menu {
-            background: #1a1a1a; border-radius: 10px;
-            padding: 8px; font-size: 13px;
-        }
-        .mock-menu-item {
-            padding: 10px 12px; color: var(--gray-300);
-            display: flex; align-items: center; gap: 10px;
-            border-radius: 6px;
-        }
-        .mock-menu-item.target {
-            background: var(--orange-soft);
-            color: var(--orange);
-            font-weight: 700;
-            border: 1px solid var(--orange);
-        }
-        .mock-icon { font-size: 16px; }
-
-        /* DICA */
-        .tip {
-            background: rgba(16, 185, 129, 0.08);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 10px;
-            padding: 12px 14px;
-            margin-top: 12px;
-            font-size: 13px;
-            color: #a7f3d0;
-            line-height: 1.5;
-        }
-        .tip strong { color: #10b981; }
-
-        .warn {
-            background: rgba(239, 68, 68, 0.08);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 10px;
-            padding: 12px 14px;
-            margin-top: 12px;
-            font-size: 13px;
-            color: #fecaca;
-            line-height: 1.5;
-        }
-        .warn strong { color: #ef4444; }
-
-        /* IMPORTANTE banner */
-        .important-banner {
-            background: rgba(245, 138, 0, 0.1);
-            border: 1px solid rgba(245, 138, 0, 0.4);
-            border-radius: 12px;
-            padding: 16px;
-            margin: 16px 0 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 4;
+            font-size: 9px; color: #222;
             text-align: center;
         }
-        .important-banner strong { color: var(--orange); font-size: 14px; }
-        .important-banner p { font-size: 13px; color: var(--gray-300); margin-top: 6px; line-height: 1.5; }
-        .important-banner a {
-            display: inline-block; margin-top: 12px;
-            padding: 12px 24px; background: var(--orange); color: var(--black);
-            border-radius: 100px; font-weight: 800; font-size: 14px;
-            text-decoration: none;
+        .phone-dialog .title { font-weight: 800; font-size: 11px; margin-bottom: 4px; }
+        .phone-dialog .desc { color: #666; font-size: 8px; margin-bottom: 8px; line-height: 1.3; }
+        .phone-dialog .btns { display: flex; gap: 6px; }
+        .phone-dialog button { flex: 1; padding: 6px; border-radius: 6px; font-size: 9px; border: 0; font-weight: 700; }
+        .phone-dialog .cancel { background: #eee; color: #444; }
+        .phone-dialog .confirm { background: var(--orange); color: #000; box-shadow: 0 0 0 0 rgba(245, 138, 0, 0.7); animation: pulseRing 1.5s infinite; }
+
+        /* HOMESCREEN com ícone */
+        .homescreen { background: linear-gradient(180deg, #1a3a5a 0%, #0a1a2a 100%); }
+        .home-grid {
+            position: absolute; inset: 32px 12px 12px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+            align-content: start;
+            padding-top: 20px;
+        }
+        .home-icon {
+            aspect-ratio: 1; border-radius: 12px;
+            background: rgba(255,255,255,0.18);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px;
+        }
+        .home-icon.gamma {
+            background: linear-gradient(135deg, var(--orange), #ff6b1a);
+            box-shadow: 0 0 0 0 rgba(245, 138, 0, 0.7);
+            animation: pulseRing 1.5s infinite;
+            color: #000; font-weight: 900; font-size: 15px;
         }
 
-        /* DIVIDER */
-        .section-title-big {
-            font-size: 20px; font-weight: 800; margin: 36px 0 4px;
-            letter-spacing: -0.3px;
+        /* Desktop URL bar */
+        .desktop-bar {
+            background: #1a1a1a; border-radius: 100px;
+            padding: 8px 12px; font-size: 11px;
+            color: #aaa; display: flex; align-items: center; gap: 8px;
+            margin: 0 auto 14px; max-width: 480px;
+            border: 1px solid #2a2a2a;
         }
-        .section-subtitle {
-            color: var(--gray-300); font-size: 13px; margin-bottom: 18px;
-        }
-
-        /* ATUALIZAÇÃO */
-        .update-card {
-            background: linear-gradient(135deg, var(--black-card), var(--black-elev));
-            border: 1px solid rgba(245, 138, 0, 0.3);
-            border-radius: var(--radius);
-            padding: 22px 20px;
-        }
-        .update-card h3 {
-            font-size: 17px; font-weight: 700; margin-bottom: 8px;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .update-card p { color: var(--gray-300); font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
-        .update-toast-mock {
-            background: var(--orange); color: var(--black);
-            padding: 10px 14px; border-radius: 100px;
-            font-size: 12px; font-weight: 700; text-align: center;
-            box-shadow: 0 6px 20px rgba(245, 138, 0, 0.4);
-            display: inline-block; margin-top: 6px;
+        .desktop-bar .install-icon {
+            margin-left: auto;
+            background: var(--orange); color: #000;
+            border-radius: 50%; width: 28px; height: 28px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 16px;
+            box-shadow: 0 0 0 0 rgba(245, 138, 0, 0.7);
+            animation: pulseRing 1.5s infinite;
         }
 
         /* FAQ */
-        .faq { margin-top: 14px; }
-        .faq-item {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-bottom: 10px;
-            overflow: hidden;
+        .faq h2 {
+            font-size: 22px; font-weight: 800; margin: 36px 0 16px;
+            text-align: center;
         }
-        .faq-q {
-            padding: 16px 18px; font-weight: 700; font-size: 14px;
-            cursor: pointer; display: flex; justify-content: space-between;
-            align-items: center; gap: 12px; color: var(--gray-100);
-            list-style: none;
+        details {
+            background: var(--black-card); border: 1px solid var(--border);
+            border-radius: 12px; margin-bottom: 8px;
+            transition: var(--transition);
         }
-        .faq-q::-webkit-details-marker { display: none; }
-        .faq-q::after {
-            content: '+'; color: var(--orange); font-size: 22px; font-weight: 400;
-            flex-shrink: 0; transition: transform 0.2s;
+        details[open] { border-color: rgba(245, 138, 0, 0.3); }
+        summary {
+            padding: 16px; cursor: pointer; font-weight: 700; font-size: 14px;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
         }
-        details[open] .faq-q::after { transform: rotate(45deg); }
-        .faq-a {
-            padding: 0 18px 16px; color: var(--gray-300); font-size: 13px;
-            line-height: 1.6;
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: '+'; color: var(--orange); font-size: 22px; font-weight: 400; }
+        details[open] summary::after { content: '−'; }
+        details > p, details > div {
+            padding: 0 16px 16px; color: var(--gray-300); font-size: 13px; line-height: 1.6;
         }
-        .faq-a strong { color: #fff; }
 
-        /* CTA FINAL */
-        .cta-final {
-            background: linear-gradient(135deg, var(--black-card), var(--black-elev));
-            border: 1px solid rgba(245, 138, 0, 0.3);
-            border-radius: var(--radius);
-            padding: 26px 22px; text-align: center;
-            margin-top: 32px;
-        }
-        .cta-final h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
-        .cta-final p { color: var(--gray-300); font-size: 13px; margin-bottom: 16px; }
-        .cta-final .btn {
-            display: inline-flex; align-items: center; gap: 8px;
+        /* CTA voltar */
+        .back-cta {
+            display: block; text-align: center;
             background: var(--orange); color: var(--black);
-            padding: 14px 28px; border-radius: 100px;
-            font-weight: 800; font-size: 14px; text-decoration: none;
+            padding: 16px; border-radius: 14px;
+            font-weight: 800; font-size: 16px;
+            margin: 32px auto 0; max-width: 320px;
+            box-shadow: 0 8px 24px rgba(245, 138, 0, 0.4);
         }
+        .back-cta:active { transform: scale(0.98); }
 
-        .help-link { text-align: center; margin-top: 22px; font-size: 13px; color: var(--gray-500); }
-        .help-link a { color: var(--orange); font-weight: 600; }
-
-        .back-link {
+        .label-arrow {
             display: inline-flex; align-items: center; gap: 6px;
-            color: var(--gray-300); font-size: 13px;
-            text-decoration: none; padding: 10px 0;
+            background: var(--orange-soft); color: var(--orange);
+            padding: 4px 10px; border-radius: 100px;
+            font-size: 11px; font-weight: 700;
+            margin-top: 8px;
         }
-        .back-link:hover { color: var(--orange); }
+
+        /* SUCCESS */
+        .success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.4);
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center; margin: 24px 0;
+        }
+        .success .ic { font-size: 36px; margin-bottom: 8px; }
+        .success h3 { color: var(--green); font-size: 16px; margin-bottom: 4px; }
+        .success p { font-size: 13px; color: var(--gray-100); line-height: 1.5; }
+
+        @media (min-width: 600px) {
+            .picker-btn { font-size: 14px; padding: 16px 8px; }
+            .picker-btn .ic { font-size: 28px; }
+        }
     </style>
 </head>
 <body>
-    <div class="install-page">
+    <main class="page">
 
-        <a href="/" class="back-link">← Voltar para o app</a>
-
-        <div class="install-hero">
-            <img src="/icons/icon-512.png" alt="Gamma Quant">
-            <h1>Como instalar o app</h1>
-            <p>Em menos de 30 segundos você vai ter o ícone do <strong>Gamma Quant</strong><br>direto na tela do seu celular ou computador.</p>
-            <span class="badge">⚡ NÃO PRECISA DE LOJA NEM CADASTRO</span>
+        <!-- HERO -->
+        <div class="hero">
+            <img src="/icons/icon-512.png" alt="Gamma Quant" class="hero-icon">
+            <span class="time-badge">Leva 30 segundos</span>
+            <h1>Coloque o Gamma <span class="highlight">na sua tela</span></h1>
+            <p>Escolha seu aparelho abaixo e siga o passo a passo. É super simples — vou te guiar imagem por imagem.</p>
         </div>
 
-        <div class="important-banner">
-            <strong>⚠️ IMPORTANTE</strong>
-            <p>Antes de começar, abra o app principal pelo botão abaixo. É de lá que o navegador puxa o nome correto.</p>
-            <a href="/">Abrir Gamma Quant</a>
+        <!-- AVISO CRÍTICO -->
+        <div class="warn-big">
+            <strong>Antes de começar</strong>
+            Se você está vendo isto pelo <strong>WhatsApp ou Instagram</strong>, NÃO vai funcionar.
+            Toque nos 3 pontinhos (⋮) e escolha <strong>"Abrir no navegador"</strong> primeiro.
         </div>
 
-        <!-- ABAS -->
-        <div class="platform-tabs" role="tablist">
-            <button class="platform-tab" data-platform="android">🤖 Android</button>
-            <button class="platform-tab" data-platform="iphone">📱 iPhone</button>
-            <button class="platform-tab" data-platform="pc">💻 Computador</button>
+        <!-- DEVICE PICKER -->
+        <div class="picker" role="tablist">
+            <button class="picker-btn" data-target="android" role="tab"><span class="ic">🤖</span>Android</button>
+            <button class="picker-btn" data-target="iphone" role="tab"><span class="ic">📱</span>iPhone</button>
+            <button class="picker-btn" data-target="desktop" role="tab"><span class="ic">💻</span>Computador</button>
         </div>
 
         <!-- ============ ANDROID ============ -->
-        <div class="platform-section" data-section="android">
+        <section class="panel" id="panel-android">
 
             <div class="step">
                 <div class="step-head">
                     <div class="step-num">1</div>
-                    <div class="step-title">Abra o app no Chrome do celular</div>
+                    <div class="step-title">Toque nos 3 pontinhos no canto superior direito</div>
                 </div>
-                <div class="step-desc">
-                    Pegue seu celular Android e abra o <strong>Google Chrome</strong> (o ícone colorido — vermelho, amarelo, verde e azul). Na barra de cima, digite:
-                </div>
-                <div class="mock">
-                    <span class="mock-label">CHROME</span>
-                    <div class="mock-bar">
-                        <div class="mock-bar-icon">🔒</div>
-                        <div class="mock-bar-url">app.gammaquant.com.br</div>
-                    </div>
-                </div>
-                <div class="warn">
-                    <strong>❌ Não funciona no WhatsApp e Instagram.</strong> Se o link foi enviado por lá, copie e cole no <strong>Chrome</strong>. Funciona também no Samsung Internet, Edge e Opera.
-                </div>
-            </div>
+                <p class="step-desc">É o menu do seu navegador (Chrome). Fica do lado da barra de endereço, lá no alto.</p>
 
-            <div class="step">
-                <div class="step-head">
-                    <div class="step-num">2</div>
-                    <div class="step-title">Toque na faixa "Instalar app"</div>
-                </div>
-                <div class="step-desc">
-                    Quando a página carregar, vai aparecer uma <strong>faixa laranja</strong> em cima ou embaixo da tela. Ela diz:
-                </div>
-                <div class="mock">
-                    <span class="mock-label">SUA TELA</span>
-                    <div class="mock-highlight">📱 Instalar app</div>
-                </div>
-                <div class="step-desc" style="margin-top: 14px;">
-                    <strong>Toque nela.</strong> Vai abrir uma janela do Chrome perguntando se você quer instalar.
-                </div>
-                <div class="tip">
-                    <strong>💡 Não apareceu a faixa?</strong> Sem problema. Toque nos <strong>3 pontinhos ⋮</strong> no canto superior direito do Chrome → role até <strong>"Instalar app"</strong> ou <strong>"Adicionar à tela inicial"</strong>.
-                </div>
-                <div class="mock" style="margin-top: 12px;">
-                    <span class="mock-label">MENU ⋮</span>
-                    <div class="mock-menu">
-                        <div class="mock-menu-item"><span class="mock-icon">⭐</span>Favoritos</div>
-                        <div class="mock-menu-item"><span class="mock-icon">↓</span>Downloads</div>
-                        <div class="mock-menu-item target"><span class="mock-icon">📥</span>Instalar app</div>
-                        <div class="mock-menu-item"><span class="mock-icon">⚙️</span>Configurações</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="step">
-                <div class="step-head">
-                    <div class="step-num">3</div>
-                    <div class="step-title">Confirme: toque em "Instalar"</div>
-                </div>
-                <div class="step-desc">
-                    Vai abrir uma janelinha branca/preta com o ícone do Gamma e o botão <strong>Instalar</strong>. Toque.
-                </div>
-                <div class="mock">
-                    <span class="mock-label">JANELA DO CHROME</span>
-                    <div style="background: #1a1a1a; padding: 16px; border-radius: 12px; text-align: center;">
-                        <img src="/icons/icon-192.png" alt="" style="width: 56px; height: 56px; border-radius: 12px; margin: 0 auto 10px; display: block;">
-                        <div style="font-weight: 700; color: #fff; font-size: 14px;">Gamma Quant</div>
-                        <div style="font-size: 11px; color: #a3a3a3; margin-bottom: 14px;">app.gammaquant.com.br</div>
-                        <div style="display: flex; gap: 8px; justify-content: center;">
-                            <span style="padding: 8px 16px; background: transparent; border: 1px solid #444; color: #d4d4d4; border-radius: 100px; font-size: 12px; font-weight: 600;">Cancelar</span>
-                            <span style="padding: 8px 20px; background: #f58a00; color: #000; border-radius: 100px; font-size: 12px; font-weight: 800;">Instalar 👆</span>
+                <div class="phone">
+                    <div class="phone-screen">
+                        <div class="url-bar">
+                            <span class="lock">🔒</span> app.gammaquant.com.br
+                            <span class="three-dots target">⋮</span>
+                        </div>
+                        <div class="phone-content">
+                            <div class="phone-line med"></div>
+                            <div class="phone-line short"></div>
+                            <div class="phone-line orange"></div>
+                            <div class="phone-line"></div>
+                            <div class="phone-line short"></div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="step">
-                <div class="step-head">
-                    <div class="step-num done">✓</div>
-                    <div class="step-title">Pronto! Ícone laranja na tela inicial</div>
-                </div>
-                <div class="step-desc">
-                    O ícone <strong>laranja com Y</strong> aparece automaticamente:
-                </div>
-                <ul style="padding-left: 22px; color: var(--gray-300); font-size: 14px; line-height: 1.8;">
-                    <li>Na sua <strong>tela inicial</strong></li>
-                    <li>Na <strong>gaveta de apps</strong> (junto com WhatsApp, Instagram, etc.)</li>
-                </ul>
-                <div class="step-desc" style="margin-top: 12px;">
-                    Quando você abre, ele aparece em <strong>tela cheia</strong>, sem barra de navegador. Igualzinho a um app baixado da Play Store.
-                </div>
-            </div>
-        </div>
-
-        <!-- ============ IPHONE ============ -->
-        <div class="platform-section" data-section="iphone">
-
-            <div class="step">
-                <div class="step-head">
-                    <div class="step-num">1</div>
-                    <div class="step-title">Abra no Safari (não no WhatsApp)</div>
-                </div>
-                <div class="step-desc">
-                    Pegue seu iPhone e abra o <strong>Safari</strong> (a bússola azul nativa do iPhone). Na barra, digite:
-                </div>
-                <div class="mock">
-                    <span class="mock-label">SAFARI</span>
-                    <div class="mock-bar">
-                        <div class="mock-bar-icon">🔒</div>
-                        <div class="mock-bar-url">app.gammaquant.com.br</div>
-                    </div>
-                </div>
-                <div class="warn">
-                    <strong>❌ Só funciona no Safari.</strong> Se o link veio pelo WhatsApp ou Instagram, copie a URL e cole no Safari. Não funciona no Chrome do iPhone (limitação da Apple).
-                </div>
+                <span class="label-arrow">👆 toque aqui no ⋮ pulsante</span>
             </div>
 
             <div class="step">
                 <div class="step-head">
                     <div class="step-num">2</div>
-                    <div class="step-title">Toque no botão Compartilhar</div>
+                    <div class="step-title">Procure por "Instalar app" ou "Adicionar à tela inicial"</div>
                 </div>
-                <div class="step-desc">
-                    É o ícone de um <strong>quadrado com seta para cima</strong>, que fica na <strong>barra de baixo</strong> do Safari (no meio).
-                </div>
-                <div class="mock">
-                    <span class="mock-label">BARRA INFERIOR DO SAFARI</span>
-                    <div style="display: flex; justify-content: space-around; padding: 14px 4px; background: #1a1a1a; border-radius: 12px;">
-                        <span style="font-size: 22px; opacity: 0.4;">◀</span>
-                        <span style="font-size: 22px; opacity: 0.4;">▶</span>
-                        <span style="font-size: 22px; padding: 4px 8px; border: 2px dashed #f58a00; border-radius: 8px; background: rgba(245,138,0,0.15); animation: tap 1.4s ease-in-out infinite;">⬆️</span>
-                        <span style="font-size: 22px; opacity: 0.4;">📚</span>
-                        <span style="font-size: 22px; opacity: 0.4;">⊞</span>
+                <p class="step-desc">Vai abrir uma lista. <strong>Role para baixo</strong> se não aparecer logo. O nome muda dependendo da versão do Chrome.</p>
+
+                <div class="phone">
+                    <div class="phone-screen">
+                        <div class="url-bar"><span class="lock">🔒</span> app.gammaquant.com.br <span class="three-dots">⋮</span></div>
+                        <div class="phone-content">
+                            <div class="phone-line short"></div>
+                            <div class="phone-line"></div>
+                        </div>
+                        <div class="phone-menu">
+                            <div class="item"><span class="ic">⭐</span>Favoritar</div>
+                            <div class="item"><span class="ic">⬇</span>Downloads</div>
+                            <div class="item target"><span class="ic">📲</span>Instalar app</div>
+                            <div class="item"><span class="ic">🔄</span>Atualizar</div>
+                            <div class="item"><span class="ic">⚙</span>Configurações</div>
+                        </div>
                     </div>
-                    <div style="text-align: center; font-size: 11px; color: #f58a00; font-weight: 700; margin-top: 8px;">↑ Toque aqui</div>
                 </div>
+                <span class="label-arrow">👆 toque em "Instalar app"</span>
             </div>
 
             <div class="step">
                 <div class="step-head">
                     <div class="step-num">3</div>
-                    <div class="step-title">Role e toque em "Adicionar à Tela de Início"</div>
+                    <div class="step-title">Confirme tocando em "Instalar"</div>
                 </div>
-                <div class="step-desc">
-                    Vai aparecer um menu grande. Role para baixo até encontrar:
-                </div>
-                <div class="mock">
-                    <span class="mock-label">MENU COMPARTILHAR</span>
-                    <div class="mock-menu">
-                        <div class="mock-menu-item"><span class="mock-icon">📋</span>Copiar</div>
-                        <div class="mock-menu-item"><span class="mock-icon">⭐</span>Adicionar aos Favoritos</div>
-                        <div class="mock-menu-item"><span class="mock-icon">📖</span>Adicionar à Lista de Leitura</div>
-                        <div class="mock-menu-item target"><span class="mock-icon">➕</span>Adicionar à Tela de Início</div>
-                        <div class="mock-menu-item"><span class="mock-icon">🖨️</span>Imprimir</div>
+                <p class="step-desc">Aparece uma caixinha pedindo confirmação. <strong>Toque no botão laranja "Instalar"</strong>.</p>
+
+                <div class="phone">
+                    <div class="phone-screen">
+                        <div class="url-bar"><span class="lock">🔒</span> app.gammaquant.com.br <span class="three-dots">⋮</span></div>
+                        <div class="phone-content" style="filter: blur(1px); opacity: 0.5;">
+                            <div class="phone-line"></div>
+                            <div class="phone-line short"></div>
+                            <div class="phone-line"></div>
+                        </div>
+                        <div class="phone-dialog">
+                            <div class="title">Instalar Gamma Quant?</div>
+                            <div class="desc">Vai aparecer um ícone laranja na sua tela inicial</div>
+                            <div class="btns">
+                                <button class="cancel">Cancelar</button>
+                                <button class="confirm">Instalar</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="tip">
-                    <strong>💡 Dica:</strong> Pode precisar rolar para baixo. A opção fica na <strong>segunda fileira de ações</strong>, abaixo das opções de envio (AirDrop, Mensagens, WhatsApp).
-                </div>
+                <span class="label-arrow">👆 toque em "Instalar"</span>
             </div>
 
             <div class="step">
                 <div class="step-head">
                     <div class="step-num">4</div>
-                    <div class="step-title">Confirme em "Adicionar"</div>
+                    <div class="step-title">Pronto! O ícone laranja já está na sua tela</div>
                 </div>
-                <div class="step-desc">
-                    Vai abrir uma tela com o ícone do Gamma e o nome <strong>"Gamma Quant"</strong> já preenchido. Toque em <strong>Adicionar</strong> no canto superior direito.
-                </div>
-                <div class="mock">
-                    <span class="mock-label">CONFIRMAR</span>
-                    <div style="display: flex; justify-content: space-between; align-items: center; background: #1a1a1a; padding: 12px 14px; border-radius: 10px;">
-                        <span style="color: #a3a3a3; font-size: 13px;">Cancelar</span>
-                        <span style="color: #fff; font-weight: 700; font-size: 14px;">Adicionar à Tela de Início</span>
-                        <span style="color: #f58a00; font-weight: 800; font-size: 13px; padding: 4px 10px; border: 2px dashed #f58a00; border-radius: 6px;">Adicionar 👆</span>
+                <p class="step-desc">Volte para a tela inicial do celular. Procure o <strong>Y dourado em fundo laranja</strong> — é o Gamma. Toque nele e o app abre instantâneo.</p>
+
+                <div class="phone">
+                    <div class="phone-screen homescreen">
+                        <div class="home-grid">
+                            <div class="home-icon">📷</div>
+                            <div class="home-icon">📨</div>
+                            <div class="home-icon">📞</div>
+                            <div class="home-icon gamma">Y</div>
+                            <div class="home-icon">🎵</div>
+                            <div class="home-icon">📅</div>
+                            <div class="home-icon">⚙</div>
+                            <div class="home-icon">💬</div>
+                        </div>
                     </div>
                 </div>
+                <span class="label-arrow">✨ esse é seu app Gamma!</span>
             </div>
 
-            <div class="step">
-                <div class="step-head">
-                    <div class="step-num done">✓</div>
-                    <div class="step-title">Pronto! Ícone laranja na sua tela</div>
-                </div>
-                <div class="step-desc">
-                    Saia do Safari e vá para a <strong>tela inicial</strong> do iPhone. Procure o <strong>ícone laranja com o Y</strong> da Gamma Quant — pode estar na última página, role para o lado.
-                </div>
-                <div class="step-desc">
-                    Quando abrir, o app fica em <strong>tela cheia</strong>, sem barra do navegador. Igual a um app de verdade.
-                </div>
+            <div class="success">
+                <div class="ic">🎉</div>
+                <h3>Instalação concluída</h3>
+                <p>Sempre que quiser ver o Protocolo, é só tocar no ícone laranja. Sem precisar digitar nada.</p>
             </div>
-        </div>
 
-        <!-- ============ COMPUTADOR ============ -->
-        <div class="platform-section" data-section="pc">
+            <div class="tip-big">
+                <strong>Não apareceu "Instalar app" no menu?</strong> Significa que o Chrome ainda está carregando os requisitos. Espere 10 segundos, role a página e tente de novo. Se mesmo assim não aparecer, atualize a página (puxe pra baixo).
+            </div>
+        </section>
+
+        <!-- ============ IPHONE ============ -->
+        <section class="panel" id="panel-iphone">
+
+            <div class="warn-big">
+                <strong>Importante: precisa ser pelo Safari</strong>
+                Se estiver no Chrome do iPhone, <strong>copie o link</strong> e cole no Safari (o navegador da bússola azul).
+                Só o Safari consegue instalar apps no iPhone.
+            </div>
 
             <div class="step">
                 <div class="step-head">
                     <div class="step-num">1</div>
-                    <div class="step-title">Abra o site no Chrome ou Edge</div>
+                    <div class="step-title">Toque no botão Compartilhar</div>
                 </div>
-                <div class="step-desc">
-                    No seu computador (Windows, Mac ou Linux), abra <strong>Google Chrome</strong> ou <strong>Microsoft Edge</strong> e vá em:
-                </div>
-                <div class="mock">
-                    <span class="mock-label">NAVEGADOR</span>
-                    <div class="mock-bar">
-                        <div class="mock-bar-icon">🔒</div>
-                        <div class="mock-bar-url">app.gammaquant.com.br</div>
+                <p class="step-desc">É o quadradinho com uma seta apontando pra cima. Fica na <strong>barra de baixo</strong> do Safari, no centro.</p>
+
+                <div class="phone">
+                    <div class="phone-screen">
+                        <div class="url-bar"><span class="lock">🔒</span> app.gammaquant.com.br</div>
+                        <div class="phone-content">
+                            <div class="phone-line med"></div>
+                            <div class="phone-line orange"></div>
+                            <div class="phone-line"></div>
+                            <div class="phone-line short"></div>
+                        </div>
+                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: #1a1a1a; padding: 8px; display: flex; justify-content: space-around; border-top: 1px solid #333;">
+                            <span style="font-size: 14px; color: #888;">‹</span>
+                            <span style="font-size: 14px; color: #888;">›</span>
+                            <span class="three-dots target" style="background: var(--orange); color: #000; border-radius: 6px; width: 26px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800;">⬆</span>
+                            <span style="font-size: 14px; color: #888;">📚</span>
+                            <span style="font-size: 14px; color: #888;">⊞</span>
+                        </div>
                     </div>
                 </div>
+                <span class="label-arrow">👆 toque no quadrado com a seta</span>
             </div>
 
             <div class="step">
                 <div class="step-head">
                     <div class="step-num">2</div>
-                    <div class="step-title">Clique no ícone de instalar</div>
+                    <div class="step-title">Role para baixo e toque em "Adicionar à Tela de Início"</div>
                 </div>
-                <div class="step-desc">
-                    Olhe na <strong>barra de endereços</strong>, do lado direito da URL. Vai aparecer um ícone parecido com um <strong>monitor com seta para baixo</strong>:
-                </div>
-                <div class="mock">
-                    <span class="mock-label">BARRA DE ENDEREÇOS</span>
-                    <div class="mock-bar">
-                        <div class="mock-bar-icon">🔒</div>
-                        <div class="mock-bar-url">app.gammaquant.com.br</div>
-                        <span style="padding: 4px 8px; border: 2px dashed #f58a00; border-radius: 6px; color: #f58a00; font-size: 14px; animation: tap 1.4s ease-in-out infinite;">⊕</span>
+                <p class="step-desc">Vai abrir um menu grande. <strong>Role com o dedo pra cima</strong> e procure a opção com um ícone de quadrado com +.</p>
+
+                <div class="phone">
+                    <div class="phone-screen" style="background: #f5f5f7;">
+                        <div style="background: #fff; margin: 4px; border-radius: 8px; padding: 6px; display: flex; gap: 4px; align-items: center;">
+                            <div style="width: 18px; height: 18px; background: #ddd; border-radius: 4px;"></div>
+                            <div style="font-size: 8px; color: #222; font-weight: 700;">Gamma Quant</div>
+                        </div>
+                        <div style="background: #fff; margin: 4px; border-radius: 8px;">
+                            <div style="padding: 6px 8px; font-size: 8px; color: #222; border-bottom: 1px solid #eee;">📋 Copiar</div>
+                            <div style="padding: 6px 8px; font-size: 8px; color: #222; border-bottom: 1px solid #eee;">⭐ Favoritos</div>
+                            <div style="padding: 6px 8px; font-size: 8px; color: #c66800; background: rgba(245,138,0,0.18); font-weight: 800; border-bottom: 1px solid #eee;">⊞ Adicionar à Tela de Início</div>
+                            <div style="padding: 6px 8px; font-size: 8px; color: #222;">🖨 Imprimir</div>
+                        </div>
                     </div>
-                    <div style="text-align: center; font-size: 11px; color: #f58a00; font-weight: 700; margin-top: 8px;">↑ Clique aqui</div>
                 </div>
-                <div class="tip">
-                    <strong>💡 Não achou o ícone?</strong> Clique nos <strong>3 pontinhos ⋮</strong> (canto superior direito) → procure <strong>"Instalar Gamma Quant"</strong>.
-                </div>
+                <span class="label-arrow">👆 toque em "Adicionar à Tela de Início"</span>
             </div>
 
             <div class="step">
                 <div class="step-head">
                     <div class="step-num">3</div>
-                    <div class="step-title">Confirme "Instalar"</div>
+                    <div class="step-title">Toque em "Adicionar" no canto superior direito</div>
                 </div>
-                <div class="step-desc">
-                    Uma janela vai abrir mostrando o ícone e o nome do app. Clique em <strong>Instalar</strong>.
+                <p class="step-desc">Aparece uma tela com o nome do app e o ícone laranja. <strong>Não precisa mudar nada</strong> — só tocar em "Adicionar".</p>
+
+                <div class="phone">
+                    <div class="phone-screen" style="background: #f5f5f7; padding: 24px 8px 8px;">
+                        <div style="display: flex; justify-content: space-between; padding: 4px 8px; font-size: 9px;">
+                            <span style="color: #666;">Cancelar</span>
+                            <span style="color: #c66800; font-weight: 800; background: rgba(245,138,0,0.2); padding: 2px 8px; border-radius: 6px; animation: pulseRing 1.5s infinite;">Adicionar</span>
+                        </div>
+                        <div style="background: #fff; margin: 8px; border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 8px;">
+                            <div style="width: 36px; height: 36px; background: var(--orange); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #000; font-weight: 900; font-size: 16px;">Y</div>
+                            <div>
+                                <div style="font-size: 10px; color: #222; font-weight: 700;">Gamma Quant</div>
+                                <div style="font-size: 7px; color: #888;">app.gammaquant.com.br</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <span class="label-arrow">👆 toque em "Adicionar"</span>
             </div>
 
             <div class="step">
                 <div class="step-head">
-                    <div class="step-num done">✓</div>
-                    <div class="step-title">Pronto! App na sua área de trabalho</div>
+                    <div class="step-num">4</div>
+                    <div class="step-title">Pronto! O ícone está na sua tela</div>
                 </div>
-                <div class="step-desc">
-                    O Gamma vira um <strong>app de verdade</strong>:
+                <p class="step-desc">Saia do Safari (botão home ou deslize de baixo). Procure o <strong>Y dourado em fundo laranja</strong>. É só tocar nele.</p>
+
+                <div class="phone">
+                    <div class="phone-screen homescreen">
+                        <div class="home-grid">
+                            <div class="home-icon">📷</div>
+                            <div class="home-icon">📨</div>
+                            <div class="home-icon">📞</div>
+                            <div class="home-icon">🎵</div>
+                            <div class="home-icon">📅</div>
+                            <div class="home-icon gamma">Y</div>
+                            <div class="home-icon">⚙</div>
+                            <div class="home-icon">💬</div>
+                        </div>
+                    </div>
                 </div>
-                <ul style="padding-left: 22px; color: var(--gray-300); font-size: 14px; line-height: 1.8;">
-                    <li><strong>Windows:</strong> aparece no Menu Iniciar e na barra de tarefas</li>
-                    <li><strong>Mac:</strong> aparece no Launchpad e pode ser fixado no Dock</li>
-                    <li><strong>Linux:</strong> aparece no menu de aplicativos</li>
-                </ul>
+                <span class="label-arrow">✨ esse é seu app Gamma!</span>
             </div>
-        </div>
 
-        <!-- ============ ATUALIZAÇÃO ============ -->
-        <h2 class="section-title-big">🔄 Como atualizar o app</h2>
-        <p class="section-subtitle">A boa notícia: <strong style="color: #fff;">você não precisa fazer nada.</strong> O app se atualiza sozinho.</p>
-
-        <div class="update-card">
-            <h3>⚡ Atualização automática</h3>
-            <p>
-                Toda vez que você abre o app, ele <strong>verifica se tem versão nova</strong> em segundo plano. Se tiver, atualiza imediatamente — sem clicar em nada, sem ir em loja.
-            </p>
-            <p>
-                Quando a atualização entra, aparece este aviso na parte de baixo da tela por alguns segundos:
-            </p>
-            <div class="update-toast-mock">✓ App atualizado para a nova versão</div>
-            <p style="margin-top: 14px;">
-                E no rodapé do app você sempre vê a versão atual — algo como <strong style="color: var(--orange);">v1.0.2</strong>. Se essa versão mudar, é porque atualizou.
-            </p>
-        </div>
-
-        <div class="step" style="margin-top: 18px;">
-            <div class="step-head">
-                <div class="step-num">📲</div>
-                <div class="step-title">Forçar atualização agora (se algo travar)</div>
+            <div class="success">
+                <div class="ic">🎉</div>
+                <h3>Instalação concluída</h3>
+                <p>Toque no ícone laranja sempre que quiser. Vai abrir o app em tela cheia, igualzinho um app da loja.</p>
             </div>
-            <div class="step-desc">
-                Em raríssimos casos o app pode "ficar preso" numa versão antiga. Aí basta:
+        </section>
+
+        <!-- ============ DESKTOP ============ -->
+        <section class="panel" id="panel-desktop">
+
+            <div class="step">
+                <div class="step-head">
+                    <div class="step-num">1</div>
+                    <div class="step-title">Olhe para a barra de endereço lá em cima</div>
+                </div>
+                <p class="step-desc">No canto direito da barra (onde está escrito <strong>app.gammaquant.com.br</strong>), aparece um ícone laranja redondo com um <strong>+</strong> dentro. Pode estar piscando.</p>
+
+                <div class="desktop-bar">
+                    <span style="color: var(--green);">🔒</span>
+                    app.gammaquant.com.br
+                    <span class="install-icon">+</span>
+                </div>
+                <span class="label-arrow" style="display: block; text-align: center; margin: 0 auto;">👆 clique no ícone laranja com +</span>
             </div>
-            <ul style="padding-left: 22px; color: var(--gray-300); font-size: 14px; line-height: 1.8;">
-                <li><strong>Fechar o app</strong> totalmente (deslizar pra fora dos apps recentes)</li>
-                <li><strong>Abrir de novo</strong> pelo ícone na tela inicial</li>
-                <li>Pronto — pega a versão mais recente</li>
-            </ul>
-            <div class="tip">
-                <strong>🆘 Se mesmo assim travar:</strong> abra <strong>app.gammaquant.com.br/reset.html</strong> no navegador. Esse link reseta tudo e força a versão nova. Use só em emergência.
+
+            <div class="step">
+                <div class="step-head">
+                    <div class="step-num">2</div>
+                    <div class="step-title">Clique em "Instalar"</div>
+                </div>
+                <p class="step-desc">Aparece uma caixinha perguntando se você quer instalar. <strong>Clique no botão "Instalar"</strong>. Demora 2 segundos.</p>
+
+                <div style="background: var(--black-card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; max-width: 320px; margin: 0 auto;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <img src="/icons/icon-192.png" alt="" style="width: 48px; height: 48px; border-radius: 10px;">
+                        <div>
+                            <div style="font-weight: 800; font-size: 14px;">Instalar Gamma Quant?</div>
+                            <div style="font-size: 11px; color: var(--gray-300);">app.gammaquant.com.br</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                        <button style="background: transparent; color: var(--gray-300); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px;">Cancelar</button>
+                        <button style="background: var(--orange); color: #000; padding: 8px 18px; border-radius: 8px; font-weight: 800; font-size: 13px; box-shadow: 0 0 0 0 rgba(245, 138, 0, 0.7); animation: pulseRing 1.5s infinite;">Instalar</button>
+                    </div>
+                </div>
+                <span class="label-arrow" style="display: block; text-align: center; margin: 12px auto 0;">👆 clique em "Instalar"</span>
             </div>
-        </div>
 
-        <!-- ============ FAQ ============ -->
-        <h2 class="section-title-big">❓ Dúvidas comuns</h2>
-        <p class="section-subtitle">Respostas rápidas para o que mais perguntam.</p>
-
-        <div class="faq">
-            <details class="faq-item">
-                <summary class="faq-q">É grátis? Vou ser cobrado depois?</summary>
-                <div class="faq-a">
-                    <strong>100% grátis</strong>, sempre. O app é só um atalho rápido pro Protocolo Gamma e pra plataforma. Você não precisa de cadastro nem cartão pra instalar.
+            <div class="step">
+                <div class="step-head">
+                    <div class="step-num">3</div>
+                    <div class="step-title">Pronto! Abre uma janela própria do Gamma</div>
                 </div>
+                <p class="step-desc">O app vai abrir numa <strong>janela separada</strong>, sem barra de endereço, parecendo um programa do computador. O atalho fica na <strong>área de trabalho</strong> e no menu Iniciar.</p>
+            </div>
+
+            <div class="success">
+                <div class="ic">🎉</div>
+                <h3>Instalação concluída</h3>
+                <p>Da próxima vez, é só dar dois cliques no ícone laranja na sua área de trabalho. Sem precisar abrir o navegador.</p>
+            </div>
+
+            <div class="tip-big">
+                <strong>Não viu o ícone com + na barra?</strong> Funciona melhor no <strong>Chrome</strong>, <strong>Edge</strong> ou <strong>Brave</strong>. Se estiver usando Firefox, ele não tem essa função — abra no Chrome.
+            </div>
+        </section>
+
+        <!-- COMO ATUALIZAR -->
+        <section style="margin-top: 36px;">
+            <h2 style="font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 16px;">🔄 Como atualizar o app</h2>
+            <div class="step">
+                <p class="step-desc" style="margin-bottom: 0;">Não precisa fazer nada! Toda vez que tem novidade, o app <strong>se atualiza sozinho</strong> em até 5 minutos. Quando atualiza, aparece uma faixa laranja no topo dizendo "✨ App atualizado".</p>
+            </div>
+            <div class="tip-big">
+                <strong>Quer forçar atualização agora?</strong> Feche o app totalmente (não só minimize) e abra de novo. Se ainda não atualizar, acesse <a href="/reset.html" style="color: var(--orange); text-decoration: underline;">app.gammaquant.com.br/reset.html</a> e clique em limpar.
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq">
+            <h2>Perguntas frequentes</h2>
+
+            <details>
+                <summary>É grátis? Tem que pagar alguma coisa?</summary>
+                <p>100% grátis. O app é um atalho rápido pro ecossistema Gamma Quant. Nada é cobrado para baixar ou usar.</p>
             </details>
 
-            <details class="faq-item">
-                <summary class="faq-q">Por que não está na Play Store / App Store?</summary>
-                <div class="faq-a">
-                    Porque é um <strong>PWA</strong> (Progressive Web App) — uma tecnologia mais moderna que dispensa loja. Vantagens: instala em segundos, ocupa <strong>menos de 1MB</strong> (apps comuns têm 50-200MB), e atualiza sozinho. Funciona em qualquer Android, iPhone, Mac, Windows e Linux.
-                </div>
+            <details>
+                <summary>Por que não está na Play Store ou App Store?</summary>
+                <p>Porque é um <strong>web app</strong> moderno (PWA). Não precisa de loja — instala direto pela página. É mais leve, atualiza sozinho e ocupa bem menos memória.</p>
             </details>
 
-            <details class="faq-item">
-                <summary class="faq-q">Vai gastar muita memória do celular?</summary>
-                <div class="faq-a">
-                    <strong>Quase nada.</strong> Ocupa menos de 1MB — bem menos que uma foto. Pode ficar tranquilo.
-                </div>
+            <details>
+                <summary>Quanto de espaço ocupa no celular?</summary>
+                <p>Menos de 5 MB. Praticamente nada. Um app comum da loja tem 50-200 MB.</p>
             </details>
 
-            <details class="faq-item">
-                <summary class="faq-q">Funciona sem internet?</summary>
-                <div class="faq-a">
-                    A tela inicial abre offline (você consegue ver o layout). Mas <strong>os dados ao vivo</strong> (live do dia, PDF, status do pregão) precisam de conexão. Sem net, eles ficam em branco até voltar.
-                </div>
+            <details>
+                <summary>Funciona offline?</summary>
+                <p>A página inicial sim. Mas como o conteúdo (Protocolo, vídeos, PDFs) vem da internet, você precisa estar online para ver os dados de hoje.</p>
             </details>
 
-            <details class="faq-item">
-                <summary class="faq-q">Preciso instalar de novo se trocar de celular?</summary>
-                <div class="faq-a">
-                    <strong>Sim, mas é o mesmo passo a passo</strong> — 30 segundos. Como o app não está numa loja, ele não migra automaticamente como um WhatsApp. Mas é tão rápido instalar que nem dá pra reclamar.
-                </div>
+            <details>
+                <summary>Vou trocar de celular. Como faço?</summary>
+                <p>É só repetir esse passo a passo no celular novo. Leva 30 segundos. Não tem login no app, não tem nada para perder.</p>
             </details>
 
-            <details class="faq-item">
-                <summary class="faq-q">Como desinstalo?</summary>
-                <div class="faq-a">
-                    Igual qualquer outro app:
-                    <ul style="padding-left: 22px; margin-top: 8px; line-height: 1.8;">
-                        <li><strong>Android:</strong> segure o ícone → "Desinstalar"</li>
-                        <li><strong>iPhone:</strong> segure o ícone → "Remover App" → "Apagar App"</li>
-                        <li><strong>Computador:</strong> abra o app → menu ⋮ → "Desinstalar"</li>
-                    </ul>
-                </div>
+            <details>
+                <summary>Como desinstalo?</summary>
+                <p>Igual qualquer app: segure o ícone, escolha "Desinstalar" (Android) ou "Remover app" (iPhone). No computador, abra o app, clique nos 3 pontinhos no canto e escolha "Desinstalar".</p>
             </details>
 
-            <details class="faq-item">
-                <summary class="faq-q">Não aparece o botão "Instalar" no Chrome do Android. E agora?</summary>
-                <div class="faq-a">
-                    Verifique 3 coisas:
-                    <ol style="padding-left: 22px; margin-top: 8px; line-height: 1.8;">
-                        <li>Você está abrindo no <strong>Chrome</strong>, não dentro do WhatsApp/Instagram?</li>
-                        <li>Você abriu o <strong>app principal</strong> antes (botão laranja no topo desta página)?</li>
-                        <li>Já tinha tentado instalar antes? Tente em <strong>aba anônima</strong> ou limpe os dados do site (Chrome → Configurações → Privacidade → Excluir dados de navegação).</li>
-                    </ol>
-                    Persistindo, fala com a gente no WhatsApp lá embaixo.
-                </div>
+            <details>
+                <summary>O botão "Instalar" não aparece. E agora?</summary>
+                <p>1) Verifique se está no <strong>Chrome</strong> (Android) ou <strong>Safari</strong> (iPhone). 2) Espere 10 segundos depois de carregar. 3) Atualize a página (puxe pra baixo). 4) Se ainda não funcionar, acesse <a href="/reset.html" style="color: var(--orange);">app.gammaquant.com.br/reset.html</a> e clique em limpar — depois tente de novo.</p>
             </details>
 
-            <details class="faq-item">
-                <summary class="faq-q">Posso instalar em mais de um aparelho?</summary>
-                <div class="faq-a">
-                    <strong>Sim, em quantos quiser.</strong> Celular pessoal, celular de trabalho, tablet, computador da empresa, notebook de casa. É grátis e ilimitado.
-                </div>
+            <details>
+                <summary>Posso instalar em vários aparelhos?</summary>
+                <p>Sim! Sem limite. Instale no celular, no tablet, no computador, no celular da esposa. Quanto mais, melhor.</p>
             </details>
-        </div>
+        </section>
 
-        <!-- CTA FINAL -->
-        <div class="cta-final">
-            <h3>Tudo pronto? Acesse o app agora.</h3>
-            <p>Se ainda não instalou, abra direto pelo navegador:</p>
-            <a href="/" class="btn">
-                <span>Abrir Gamma Quant</span>
-                <span>→</span>
-            </a>
-        </div>
+        <a href="/" class="back-cta">← Voltar para o app</a>
 
-        <p class="help-link">
-            Precisa de ajuda? Fala com a gente no <a href="https://wa.me/5521964212829" target="_blank" rel="noopener">WhatsApp 21 96421-2829</a>
-        </p>
-
-    </div>
+    </main>
 
     <script>
-        const tabs = document.querySelectorAll('.platform-tab');
-        const sections = document.querySelectorAll('.platform-section');
-
-        // Auto-detecta plataforma
+        // Auto-detect dispositivo
         const ua = navigator.userAgent;
-        let detected = 'pc';
-        if (/iPad|iPhone|iPod/.test(ua)) detected = 'iphone';
-        else if (/android/i.test(ua)) detected = 'android';
+        const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+        const isAndroid = /Android/.test(ua);
+        const isMobile = isIOS || isAndroid;
 
-        function activate(platform) {
-            tabs.forEach(t => t.classList.toggle('active', t.dataset.platform === platform));
-            sections.forEach(s => s.classList.toggle('active', s.dataset.section === platform));
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        const buttons = document.querySelectorAll('.picker-btn');
+        const panels = document.querySelectorAll('.panel');
+
+        function activate(target) {
+            buttons.forEach(b => b.classList.toggle('active', b.dataset.target === target));
+            panels.forEach(p => p.classList.toggle('active', p.id === 'panel-' + target));
         }
 
-        tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.platform)));
+        buttons.forEach(b => b.addEventListener('click', () => activate(b.dataset.target)));
 
-        // Aplica detecção inicial
-        activate(detected);
+        if (isIOS) activate('iphone');
+        else if (isAndroid) activate('android');
+        else activate('desktop');
     </script>
 </body>
 </html>

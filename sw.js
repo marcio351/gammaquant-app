@@ -1,7 +1,7 @@
 // Service Worker — Gamma Quant App
 // Network-first com fallback offline mínimo. Satisfaz critério PWA do Chrome.
 
-const VERSION = 'gamma-v12';
+const VERSION = 'gamma-v13';
 const OFFLINE_URL = '/index.html';
 
 self.addEventListener('install', (event) => {
