@@ -502,11 +502,17 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ============ BANNER INSTALAR (permanente) ============ */
+.install-banner-wrap {
+    position: relative;
+    width: 100%;
+}
+.install-banner-wrap[hidden] { display: none; }
+
 .install-banner {
     width: 100%;
     background: linear-gradient(135deg, var(--orange), var(--orange-hover));
     color: var(--black);
-    padding: 14px 44px 14px 18px;
+    padding: 14px 50px 14px 18px;
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
@@ -515,30 +521,32 @@ a { color: inherit; text-decoration: none; }
     box-shadow: 0 6px 20px rgba(245, 138, 0, 0.3);
     transition: var(--transition);
     animation: bannerPulse 2.5s ease-in-out infinite;
-    position: relative;
 }
 
 .install-banner-close {
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: 8px;
     transform: translateY(-50%);
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.18);
     color: var(--black);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    font-weight: 800;
+    font-size: 16px;
+    font-weight: 900;
     cursor: pointer;
     transition: var(--transition);
+    z-index: 5;
+    border: 0;
+    line-height: 1;
 }
 .install-banner-close:active {
-    background: rgba(0, 0, 0, 0.3);
-    transform: translateY(-50%) scale(0.92);
+    background: rgba(0, 0, 0, 0.4);
+    transform: translateY(-50%) scale(0.9);
 }
 
 .install-banner:active { transform: scale(0.98); }

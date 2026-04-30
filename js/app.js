@@ -5,7 +5,7 @@
 // ===== 1. SERVICE WORKER =====
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=14').then(reg => {
+        navigator.serviceWorker.register('/sw.js?v=15').then(reg => {
             reg.update();
         }).catch(err => console.warn('SW falhou:', err));
     });
@@ -34,8 +34,17 @@ function markAsInstalled() {
 }
 
 function hideInstallBanner() {
+    const wrap = document.getElementById('install-banner-wrap');
+    if (wrap) wrap.hidden = true;
     const banner = document.getElementById('install-banner');
     if (banner) banner.hidden = true;
+}
+
+function showInstallBanner() {
+    const wrap = document.getElementById('install-banner-wrap');
+    if (wrap) wrap.hidden = false;
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.hidden = false;
 }
 
 function isAppInstalled() {
@@ -133,11 +142,25 @@ function updateMarketStatus() {
 
 // ===== 4. BANNER DE INSTALAÇÃO (com detecção robusta) =====
 async function setupInstallBanner() {
+    const wrap = document.getElementById('install-banner-wrap');
     const banner = document.getElementById('install-banner');
-    if (!banner) return;
+    const closeBtn = document.getElementById('install-banner-close');
+    if (!banner || !wrap) return;
+
+    // Listener do X registrado SEMPRE — independente do estado do banner
+    if (closeBtn && !closeBtn.dataset.bound) {
+        closeBtn.dataset.bound = '1';
+        closeBtn.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            ev.stopImmediatePropagation();
+            try { localStorage.setItem('install-banner-dismissed', '1'); } catch(e) {}
+            hideInstallBanner();
+        });
+    }
 
     // Sempre começa escondido — só revela depois de confirmar que NÃO está instalado
-    banner.hidden = true;
+    hideInstallBanner();
 
     // 1) Já está rodando como app instalado (standalone)?
     if (isAppInstalled()) {
@@ -193,17 +216,6 @@ async function setupInstallBanner() {
 
     const sub = document.getElementById('install-banner-sub');
 
-    // Botão fechar (X) — dispensa manual definitiva
-    const closeBtn = document.getElementById('install-banner-close');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', (ev) => {
-            ev.preventDefault();
-            ev.stopPropagation();
-            try { localStorage.setItem('install-banner-dismissed', '1'); } catch(e) {}
-            banner.hidden = true;
-        });
-    }
-
     banner.addEventListener('click', async (ev) => {
         ev.preventDefault();
 
@@ -231,7 +243,7 @@ async function setupInstallBanner() {
         sub.textContent = 'Toque para ver o passo a passo';
     }
 
-    banner.hidden = false;
+    showInstallBanner();
 }
 
 // ===== 5. INTERCEPTAÇÃO DE LINKS (não perder o app no desktop) =====
