@@ -5,7 +5,7 @@
 // ===== 1. SERVICE WORKER =====
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=13').then(reg => {
+        navigator.serviceWorker.register('/sw.js?v=14').then(reg => {
             reg.update();
         }).catch(err => console.warn('SW falhou:', err));
     });
@@ -39,10 +39,21 @@ function hideInstallBanner() {
 }
 
 function isAppInstalled() {
+    // 1) Display modes que indicam PWA standalone
     if (window.matchMedia('(display-mode: standalone)').matches) return true;
+    if (window.matchMedia('(display-mode: minimal-ui)').matches) return true;
+    if (window.matchMedia('(display-mode: fullscreen)').matches) return true;
+    if (window.matchMedia('(display-mode: window-controls-overlay)').matches) return true;
+    // 2) iOS Safari standalone
     if (window.navigator.standalone === true) return true;
+    // 3) Android TWA / app shortcut: referrer começa com android-app://
+    if (document.referrer && document.referrer.startsWith('android-app://')) return true;
+    // 4) start_url no URL atual (?source=pwa) indica abertura via shortcut do PWA
+    if (window.location.search.indexOf('source=pwa') >= 0) return true;
+    // 5) Flag persistente
     try {
         if (localStorage.getItem('gamma-installed') === '1') return true;
+        if (localStorage.getItem('install-banner-dismissed') === '1') return true;
     } catch(e) {}
     return false;
 }
@@ -125,9 +136,11 @@ async function setupInstallBanner() {
     const banner = document.getElementById('install-banner');
     if (!banner) return;
 
+    // Sempre começa escondido — só revela depois de confirmar que NÃO está instalado
+    banner.hidden = true;
+
     // 1) Já está rodando como app instalado (standalone)?
     if (isAppInstalled()) {
-        banner.hidden = true;
         markAsInstalled();
         return;
     }
@@ -157,9 +170,39 @@ async function setupInstallBanner() {
         return;
     }
 
+    // 4) Só mostra o banner se houver prompt nativo disponível (Chrome/Edge)
+    //    OU se for iOS (que precisa do tutorial manual). Evita banner inútil.
     const ua = navigator.userAgent;
     const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+    const isAndroid = /Android/.test(ua);
+    const isMobile = isIOS || isAndroid;
+
+    if (!deferredInstallPrompt && !isIOS) {
+        // Sem prompt nativo e não é iOS → não há como instalar agora,
+        // espera o evento beforeinstallprompt disparar (revelação tardia)
+        // OU o user pode clicar no link "Como instalar" no rodapé.
+        // Aguarda 3s antes de revelar como fallback.
+        setTimeout(() => {
+            if (!deferredInstallPrompt && !isAppInstalled() && !isMobile) {
+                // Desktop sem prompt → app provavelmente já está instalado
+                markAsInstalled();
+                banner.hidden = true;
+            }
+        }, 3000);
+    }
+
     const sub = document.getElementById('install-banner-sub');
+
+    // Botão fechar (X) — dispensa manual definitiva
+    const closeBtn = document.getElementById('install-banner-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            try { localStorage.setItem('install-banner-dismissed', '1'); } catch(e) {}
+            banner.hidden = true;
+        });
+    }
 
     banner.addEventListener('click', async (ev) => {
         ev.preventDefault();

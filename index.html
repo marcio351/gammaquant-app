@@ -25,7 +25,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/app.css?v=13">
+    <link rel="stylesheet" href="/css/app.css?v=14">
 </head>
 <body>
     <div class="app-shell">
@@ -40,14 +40,17 @@
         </header>
 
         <!-- BANNER INSTALAR (botão nativo quando suportado, link guia caso contrário) -->
-        <button type="button" class="install-banner" id="install-banner" hidden>
-            <span class="install-banner-icon">📱</span>
-            <span class="install-banner-text">
-                <strong>Instalar app</strong>
-                <span id="install-banner-sub">Acesso rápido na tela inicial</span>
-            </span>
-            <span class="install-banner-arrow">→</span>
-        </button>
+        <div class="install-banner-wrap" id="install-banner-wrap">
+            <button type="button" class="install-banner" id="install-banner" hidden>
+                <span class="install-banner-icon">📱</span>
+                <span class="install-banner-text">
+                    <strong>Instalar app</strong>
+                    <span id="install-banner-sub">Acesso rápido na tela inicial</span>
+                </span>
+                <span class="install-banner-arrow">→</span>
+                <span class="install-banner-close" id="install-banner-close" role="button" aria-label="Fechar">✕</span>
+            </button>
+        </div>
 
         <!-- BLOCO 1 — PROTOCOLO GAMMA (TODOS) -->
         <section class="card card-protocol">
@@ -187,6 +190,6 @@
 
     </div>
 
-    <script src="/js/app.js?v=13"></script>
+    <script src="/js/app.js?v=14"></script>
 </body>
 </html>
