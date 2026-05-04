@@ -5,7 +5,7 @@
 // ===== 1. SERVICE WORKER =====
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=15').then(reg => {
+        navigator.serviceWorker.register('/sw.js?v=16').then(reg => {
             reg.update();
         }).catch(err => console.warn('SW falhou:', err));
     });
@@ -318,8 +318,22 @@ document.addEventListener('DOMContentLoaded', () => {
     setupLinkInterception();
     checkVersion();
 
-    setInterval(loadProtocol, 5 * 60 * 1000);
-    setInterval(checkVersion, 5 * 60 * 1000);
+    setInterval(loadProtocol, 2 * 60 * 1000);
+    setInterval(checkVersion, 2 * 60 * 1000);
+
+    // Revalida quando o app volta ao foreground (user reabre PWA ou troca de aba)
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            loadProtocol();
+            checkVersion();
+        }
+    });
+
+    // Revalida também em focus (desktop, troca de janela)
+    window.addEventListener('focus', () => {
+        loadProtocol();
+        checkVersion();
+    });
 });
 
 // Re-checa banner quando display-mode muda (ex: user instala em outra aba)
