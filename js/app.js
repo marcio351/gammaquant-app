@@ -5,7 +5,7 @@
 // ===== 1. SERVICE WORKER =====
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=17').then(reg => {
+        navigator.serviceWorker.register('/sw.js?v=18').then(reg => {
             reg.update();
         }).catch(err => console.warn('SW falhou:', err));
     });
@@ -59,11 +59,39 @@ function isAppInstalled() {
     if (document.referrer && document.referrer.startsWith('android-app://')) return true;
     // 4) start_url no URL atual (?source=pwa) indica abertura via shortcut do PWA
     if (window.location.search.indexOf('source=pwa') >= 0) return true;
-    // 5) Flag persistente
+    // 5) Flag persistente de instalação confirmada
     try {
         if (localStorage.getItem('gamma-installed') === '1') return true;
-        if (localStorage.getItem('install-banner-dismissed') === '1') return true;
     } catch(e) {}
+    return false;
+}
+
+function shouldHideInstallBanner() {
+    if (isAppInstalled()) return true;
+    try {
+        if (localStorage.getItem('install-banner-dismissed') === '1') return true;
+        const until = parseInt(localStorage.getItem('install-dismissed-until') || '0', 10);
+        if (until && Date.now() < until) return true;
+    } catch(e) {}
+    return false;
+}
+
+async function recheckInstalledState() {
+    if (isAppInstalled()) {
+        markAsInstalled();
+        hideInstallBanner();
+        return true;
+    }
+    if (navigator.getInstalledRelatedApps) {
+        try {
+            const related = await navigator.getInstalledRelatedApps();
+            if (related && related.length > 0) {
+                markAsInstalled();
+                hideInstallBanner();
+                return true;
+            }
+        } catch(e) {}
+    }
     return false;
 }
 
@@ -80,12 +108,11 @@ async function loadProtocol() {
 
         const [y, m, d] = data.date.split('-').map(Number);
         const dt = new Date(y, m - 1, d);
-        const dateStr = dt.toLocaleDateString('pt-BR', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long'
-        });
-        dateEl.textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+        const weekdayRaw = dt.toLocaleDateString('pt-BR', { weekday: 'long' });
+        const dayNum = dt.getDate();
+        const monthRaw = dt.toLocaleDateString('pt-BR', { month: 'long' });
+        const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+        dateEl.textContent = `${cap(weekdayRaw)}, ${dayNum} de ${cap(monthRaw)}`;
 
         liveBtn.href = data.videoUrl || '#';
         // Cache-busting com timestamp diário pra evitar PDF cacheado quando filename se repete
@@ -99,47 +126,126 @@ async function loadProtocol() {
     }
 }
 
-// ===== 3. STATUS DO PREGÃO + COUNTDOWN =====
+// ===== 3. FERIADOS NACIONAIS BR (fixos + móveis 2026-2028) =====
+const HOLIDAYS_BR = new Set([
+    // 2026
+    '2026-01-01', // Confraternização Universal
+    '2026-02-16', '2026-02-17', // Carnaval
+    '2026-04-03', // Sexta-feira Santa
+    '2026-04-21', // Tiradentes
+    '2026-05-01', // Dia do Trabalho
+    '2026-06-04', // Corpus Christi
+    '2026-09-07', // Independência
+    '2026-10-12', // N. Sra. Aparecida
+    '2026-11-02', // Finados
+    '2026-11-15', // Proclamação da República
+    '2026-11-20', // Consciência Negra (federal)
+    '2026-12-25', // Natal
+    // 2027
+    '2027-01-01',
+    '2027-02-08', '2027-02-09', // Carnaval
+    '2027-03-26', // Sexta-feira Santa
+    '2027-04-21', '2027-05-01',
+    '2027-05-27', // Corpus Christi
+    '2027-09-07', '2027-10-12', '2027-11-02', '2027-11-15', '2027-11-20', '2027-12-25',
+    // 2028
+    '2028-01-01',
+    '2028-02-28', '2028-02-29', // Carnaval
+    '2028-04-14', // Sexta-feira Santa
+    '2028-04-21', '2028-05-01',
+    '2028-06-15', // Corpus Christi
+    '2028-09-07', '2028-10-12', '2028-11-02', '2028-11-15', '2028-11-20', '2028-12-25'
+]);
+
+function ymd(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${dd}`;
+}
+
+function isBusinessDay(d) {
+    const dow = d.getDay();
+    if (dow === 0 || dow === 6) return false;
+    if (HOLIDAYS_BR.has(ymd(d))) return false;
+    return true;
+}
+
+// Próxima live (8h30 BRT em dia útil). Considera feriados.
+function nextLiveDate(now) {
+    const target = new Date(now);
+    target.setHours(8, 30, 0, 0);
+    // Se hoje já passou da hora ou não é dia útil, vai pro próximo
+    while (target <= now || !isBusinessDay(target)) {
+        target.setDate(target.getDate() + 1);
+        target.setHours(8, 30, 0, 0);
+    }
+    return target;
+}
+
+function formatCountdown(ms) {
+    if (ms <= 0) return '00:00:00';
+    const totalSec = Math.floor(ms / 1000);
+    const days = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const minutes = Math.floor((totalSec % 3600) / 60);
+    const seconds = totalSec % 60;
+    if (days > 0) {
+        return `${days}d ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function nextLiveLabel(target, now) {
+    const sameDay = target.getDate() === now.getDate() && target.getMonth() === now.getMonth() && target.getFullYear() === now.getFullYear();
+    if (sameDay) return 'Próxima live em';
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    if (target.getDate() === tomorrow.getDate() && target.getMonth() === tomorrow.getMonth()) {
+        return 'Próxima live amanhã em';
+    }
+    const diasSemana = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+    return `Próxima live ${diasSemana[target.getDay()]} em`;
+}
+
 function updateMarketStatus() {
     const now = new Date();
     const h = now.getHours();
     const m = now.getMinutes();
-    const dow = now.getDay();
 
     const statusEl = document.getElementById('market-status');
     const dotEl = statusEl.querySelector('.status-dot');
     const textEl = statusEl.querySelector('.status-text');
 
-    const isWeekday = dow >= 1 && dow <= 5;
+    const todayIsBusiness = isBusinessDay(now);
     const minutesNow = h * 60 + m;
     const marketOpen = 10 * 60;
     const marketClose = 17 * 60;
 
-    if (isWeekday && minutesNow >= marketOpen && minutesNow < marketClose) {
+    if (todayIsBusiness && minutesNow >= marketOpen && minutesNow < marketClose) {
         dotEl.className = 'status-dot open';
         textEl.textContent = 'Pregão aberto';
     } else {
         dotEl.className = 'status-dot closed';
-        textEl.textContent = isWeekday ? 'Pregão fechado' : 'Final de semana';
+        if (HOLIDAYS_BR.has(ymd(now))) {
+            textEl.textContent = 'Feriado nacional';
+        } else if (now.getDay() === 0 || now.getDay() === 6) {
+            textEl.textContent = 'Final de semana';
+        } else {
+            textEl.textContent = 'Pregão fechado';
+        }
     }
 
+    // Countdown SEMPRE visível: aponta pra próxima live útil (mesmo dia se ainda não foi, ou próximo dia útil)
     const countdownEl = document.getElementById('countdown');
     const countdownTime = document.getElementById('countdown-time');
-    if (isWeekday) {
-        const liveTarget = 8 * 60 + 30;
-        if (minutesNow < liveTarget) {
-            const diffMin = liveTarget - minutesNow;
-            const hh = String(Math.floor(diffMin / 60)).padStart(2, '0');
-            const mm = String(diffMin % 60).padStart(2, '0');
-            const ss = String(60 - now.getSeconds()).padStart(2, '0');
-            countdownTime.textContent = `${hh}:${mm}:${ss}`;
-            countdownEl.hidden = false;
-        } else {
-            countdownEl.hidden = true;
-        }
-    } else {
-        countdownEl.hidden = true;
-    }
+    const countdownLabel = countdownEl ? countdownEl.querySelector('.countdown-label') : null;
+
+    const target = nextLiveDate(now);
+    const ms = target.getTime() - now.getTime();
+    countdownTime.textContent = formatCountdown(ms);
+    if (countdownLabel) countdownLabel.textContent = nextLiveLabel(target, now);
+    countdownEl.hidden = false;
 }
 
 // ===== 4. BANNER DE INSTALAÇÃO (com detecção robusta) =====
@@ -184,14 +290,8 @@ async function setupInstallBanner() {
     }
 
     // 3) Flag manual de "já dispensado por 1 ano"
-    let dismissed = false;
-    try {
-        const until = parseInt(localStorage.getItem('install-dismissed-until') || '0', 10);
-        if (until && Date.now() < until) dismissed = true;
-    } catch(e) {}
-
-    if (dismissed) {
-        banner.hidden = true;
+    if (shouldHideInstallBanner()) {
+        hideInstallBanner();
         return;
     }
 
@@ -328,6 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.visibilityState === 'visible') {
             loadProtocol();
             checkVersion();
+            recheckInstalledState();
         }
     });
 
@@ -335,13 +436,26 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('focus', () => {
         loadProtocol();
         checkVersion();
+        recheckInstalledState();
     });
+
+    // Polling de instalação por 60s após carregar (Chrome às vezes não dispara appinstalled)
+    let pollCount = 0;
+    const installPoll = setInterval(async () => {
+        pollCount++;
+        const installed = await recheckInstalledState();
+        if (installed || pollCount >= 12) clearInterval(installPoll);
+    }, 5000);
 });
 
 // Re-checa banner quando display-mode muda (ex: user instala em outra aba)
-window.matchMedia('(display-mode: standalone)').addEventListener('change', (e) => {
-    if (e.matches) {
-        markAsInstalled();
-        hideInstallBanner();
-    }
+['standalone', 'minimal-ui', 'fullscreen', 'window-controls-overlay'].forEach(mode => {
+    try {
+        window.matchMedia(`(display-mode: ${mode})`).addEventListener('change', (e) => {
+            if (e.matches) {
+                markAsInstalled();
+                hideInstallBanner();
+            }
+        });
+    } catch(e) {}
 });
