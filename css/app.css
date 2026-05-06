@@ -294,6 +294,42 @@ a { color: inherit; text-decoration: none; }
     font-weight: 700;
 }
 
+/* ============ TARJA EM CONSTRUÇÃO ============ */
+.card-construction {
+    position: relative;
+    padding-top: 0;
+    overflow: hidden;
+    opacity: 0.92;
+}
+
+.card-construction .card-header {
+    margin-top: 18px;
+}
+
+.construction-banner {
+    background: linear-gradient(90deg, var(--orange) 0%, var(--orange-hover) 50%, var(--orange) 100%);
+    background-size: 200% 100%;
+    animation: constructionShine 4s linear infinite;
+    color: #000;
+    text-align: center;
+    padding: 11px 16px;
+    margin: 0 -24px;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(245, 138, 0, 0.3);
+}
+
+@keyframes constructionShine {
+    0% { background-position: 0 0; }
+    100% { background-position: 200% 0; }
+}
+
 /* ============ PROFILE TOGGLE ============ */
 .profile-toggle {
     display: flex;

@@ -25,7 +25,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/app.css?v=18">
+    <link rel="stylesheet" href="/css/app.css?v=19">
 </head>
 <body>
     <div class="app-shell">
@@ -122,30 +122,8 @@
             </div>
         </section>
 
-        <!-- BLOCO 4 — CURSOS -->
-        <section class="card card-courses">
-            <div class="card-header">
-                <span class="card-icon">🎓</span>
-                <h2 class="card-title-sm">Cursos Gamma</h2>
-            </div>
-            <p class="card-desc">Formação avançada em derivativos, opções e estratégias quantitativas.</p>
-
-            <div class="card-actions">
-                <button class="btn btn-primary btn-disabled" disabled>
-                    <span class="btn-icon">📚</span>
-                    <span>Área do Aluno</span>
-                    <span class="badge-soon">EM CONSTRUÇÃO</span>
-                </button>
-                <button class="btn btn-secondary btn-disabled" disabled>
-                    <span class="btn-icon">🛒</span>
-                    <span>Ver Cursos</span>
-                    <span class="badge-soon">EM CONSTRUÇÃO</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- BLOCO 5 — VISITE NOSSO SITE -->
-        <section class="card card-site">
+        <!-- BLOCO 4 — VISITE NOSSO SITE -->
+        <section class="card card-site" id="card-site">
             <div class="card-header">
                 <span class="card-icon">🌐</span>
                 <h2 class="card-title-sm">Visite nosso Site</h2>
@@ -176,6 +154,31 @@
             </a>
         </section>
 
+        <!-- BLOCO FINAL — CURSOS (em construção) -->
+        <section class="card card-courses card-construction">
+            <div class="construction-banner">
+                <span aria-hidden="true">🚧</span>
+                <span>EM CONSTRUÇÃO</span>
+                <span aria-hidden="true">🚧</span>
+            </div>
+            <div class="card-header">
+                <span class="card-icon">🎓</span>
+                <h2 class="card-title-sm">Cursos Gamma</h2>
+            </div>
+            <p class="card-desc">Formação avançada em derivativos, opções e estratégias quantitativas. Em breve no app.</p>
+
+            <div class="card-actions">
+                <button class="btn btn-primary btn-disabled" disabled>
+                    <span class="btn-icon">📚</span>
+                    <span>Área do Aluno</span>
+                </button>
+                <button class="btn btn-secondary btn-disabled" disabled>
+                    <span class="btn-icon">🛒</span>
+                    <span>Ver Cursos</span>
+                </button>
+            </div>
+        </section>
+
         <!-- SOCIAL FOOTER -->
         <footer class="app-footer">
             <p class="footer-label">Acompanhe nos canais</p>
@@ -203,6 +206,6 @@
 
     </div>
 
-    <script src="/js/app.js?v=18"></script>
+    <script src="/js/app.js?v=19"></script>
 </body>
 </html>
