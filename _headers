@@ -33,6 +33,12 @@
 /icons/*
   Cache-Control: public, max-age=86400
 
-# PDFs: cache longo
+# PDFs em /pdfs/: cache longo
 /pdfs/*
   Cache-Control: public, max-age=86400
+
+# PDFs na raiz (tutorial, anuncio): versionados via ?v=N no link, mas
+# forçar revalidação mesmo assim — nome de arquivo fixo já causou PDF
+# desatualizado em cache de navegador/CDN (assinante via Android)
+/*.pdf
+  Cache-Control: public, max-age=0, must-revalidate
