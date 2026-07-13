@@ -484,15 +484,26 @@ button { font: inherit; }
 }
 
 .cover-cta-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 4mm;
   background: var(--orange);
   color: var(--black);
-  padding: 3.5mm 12mm;
+  padding: 3mm 12mm 3mm 4mm;
   border-radius: 100px;
   font-weight: 900;
   font-size: var(--text-md);
   box-shadow: 0 4mm 12mm rgba(245, 138, 0, 0.5);
   letter-spacing: 0.3px;
+}
+
+.cover-cta-btn-icon {
+  width: 9mm;
+  height: 9mm;
+  border-radius: 2mm;
+  object-fit: cover;
+  box-shadow: 0 1mm 2mm rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
 }
 
 .cover-cta-time {
@@ -1360,7 +1371,7 @@ button { font: inherit; }
 
     <div class="cover-cta">
       <div class="cover-cta-label">comece agora</div>
-      <a href="https://app.gammaquant.com.br/" class="cover-cta-btn">abrir app.gammaquant.com.br →</a>
+      <a href="https://app.gammaquant.com.br/" class="cover-cta-btn"><img src="icon-correct.png" alt="Gamma" class="cover-cta-btn-icon">abrir app.gammaquant.com.br →</a>
       <span class="cover-cta-time">Leva apenas 30 segundos</span>
     </div>
 
