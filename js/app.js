@@ -118,7 +118,7 @@ async function loadProtocol() {
         // Cache-busting com timestamp diário pra evitar PDF cacheado quando filename se repete
         const cacheBust = data.date ? data.date.replace(/-/g, '') : Date.now();
         pdfBtn.href = data.pdfFile
-            ? `https://plataforma.gammaquant.com.br/pdfs/${data.pdfFile}?t=${cacheBust}`
+            ? `https://plataforma.gammaquant.com.br/${data.pdfFile}?t=${cacheBust}`
             : '#';
     } catch (err) {
         console.error('Erro ao carregar protocolo:', err);
