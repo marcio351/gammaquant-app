@@ -22,12 +22,15 @@
 /version.json
   Cache-Control: public, max-age=0, must-revalidate
 
-# CSS e JS: cache curto (5 min) — versionado via ?v=N
+# CSS: cache curto (5 min) — versionado via ?v=N
 /css/*
   Cache-Control: public, max-age=300, must-revalidate
 
+# JS: nunca cachear — dirige comportamento dinâmico (link do PDF do dia,
+# protocolo, etc). Cache de 5min já atrasou a propagação de um fix em
+# PWA instalado no celular (15/07/26).
 /js/*
-  Cache-Control: public, max-age=300, must-revalidate
+  Cache-Control: public, max-age=0, must-revalidate
 
 # Ícones e imagens: cache longo (1 dia)
 /icons/*
